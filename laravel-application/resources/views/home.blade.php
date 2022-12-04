@@ -1,4 +1,4 @@
 <x-frontend-layout>
     <x-slot name="title">Welcome</x-slot>
-    Test
+    Home
 </x-frontend-layout>
