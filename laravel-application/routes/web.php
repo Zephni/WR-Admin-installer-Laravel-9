@@ -13,6 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Frontend routes
 Route::view('/', 'home')->name('home');
-Route::view('/login', 'auth.login')->name('login');
-Route::get('/register', function(){})->name('register');
+
+// Auth routes
+Route::controller(App\Http\Controllers\AuthController::class)->group(function(){
+    Route::get('/login', 'login')->name('login');
+    Route::post('/login-post', 'login_post')->name('login-post');
+    Route::get('/register', 'register')->name('register');
+    Route::post('/register-post', 'register_post')->name('register-post');
+    Route::get('/logout', 'logout')->name('logout');
+});

@@ -9,16 +9,22 @@
 
         {{-- Styles / JS --}}
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
     <body class="bg-gray-200">
         {{-- Header --}}
         <section class="flex py-6 bg-slate-800 text-white shadow-md shadow-orange-400">
-            <div class="container mx-auto flex justify-between px-4">
+            <div class="container mx-auto flex justify-between px-6">
                 <p>
                     <a href="{{ route('home') }}">{{ env('APP_NAME') }}</a>
                 </p>
                 @auth
-                    <p>Logged in as {{ auth()->user()->name }}</p>
+                    <p class="font-light">
+                        Logged in as <strong>{{ auth()->user()->name }}</strong>
+                        <span class="px-2">|</span>
+                        <a href="{{ route('logout') }}">Logout</a>
+                    </p>
                 @else
                     <p class="font-light">
                         <a href="{{ route('login') }}">Login</a>
@@ -29,6 +35,7 @@
             </div>
         </section>
 
+        {{-- MAIN --}}
         <main class="container mx-auto mt-4 px-4">
             {{ $slot }}
         </main>
