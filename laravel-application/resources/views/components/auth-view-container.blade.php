@@ -3,7 +3,7 @@
 ])
 
 <section class="h-full gradient-form md:h-screen">
-    <div class="container py-12 px-6 h-full">
+    <div class="container py-12 px-6">
         <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
             <div class="xl:w-10/12">
                 <div class="block bg-white shadow-lg rounded-lg">
