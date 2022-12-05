@@ -28,15 +28,22 @@ Route::get('/set-permissions', function () {
 Route::view('/', 'home')->name('home');
 
 // Auth routes
-Route::controller(App\Http\Controllers\AuthController::class)->group(function(){
-    // Login
-    Route::get('/login', 'login')->name('login');
-    Route::post('/login-post', 'login_post')->name('login-post');
+Route::controller(App\Http\Controllers\AuthController::class)->group(function () {
+    Route::middleware('redirect_if_authenticated')->group(function(){
+        // Login
+        Route::get('/login', 'login')->name('login');
+        Route::post('/login-post', 'login_post')->name('login-post');
 
-    // Register
-    Route::get('/register', 'register')->name('register');
-    Route::post('/register-post', 'register_post')->name('register-post');
+        // Register
+        Route::get('/register', 'register')->name('register');
+        Route::post('/register-post', 'register_post')->name('register-post');
+    });
 
     // Logout
     Route::get('/logout', 'logout')->name('logout');
+});
+
+// Admin routes
+Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
+    Route::get('/', function () {return 'Logged in as admin';})->name('admin-home');
 });
