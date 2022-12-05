@@ -24,12 +24,10 @@
                         'DB_PORT',
                         'DB_DATABASE',
                         'DB_USERNAME',
-                        'DB_PASSWORD',
                         'MAIL_MAILER',
                         'MAIL_HOST',
                         'MAIL_PORT',
                         'MAIL_USERNAME',
-                        'MAIL_PASSWORD',
                         'MAIL_ENCRYPTION',
                         'MAIL_FROM_ADDRESS',
                         'MAIL_FROM_NAME'
