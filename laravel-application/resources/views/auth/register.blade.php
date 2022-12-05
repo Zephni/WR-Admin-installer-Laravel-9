@@ -1,7 +1,7 @@
 <x-frontend-layout>
     <x-slot name="title">Register</x-slot>
 
-    <x-auth-view-container>
+    <x-frontend.auth-container>
         @foreach($errors->all() as $message)
             <x-alert>{{ $message }}</x-alert>
         @endforeach
@@ -22,11 +22,10 @@
             </div>
             <div class="text-center pt-1 mb-12 pb-1">
                 <input
-                    class="inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase cursor-pointer rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3"
+                    class="inline-block px-6 py-2.5 bg-fancy text-white font-medium text-xs leading-tight uppercase cursor-pointer rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3"
                     type="submit"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="light"
-                    style="background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);"
                     value="Register" />
                 <a class="text-gray-500" href="#!">Forgot password?</a>
             </div>
@@ -41,5 +40,5 @@
                 </button>
             </div>
         </form>
-    </x-auth-view-container>
+    </x-frontend.auth-container>
 </x-frontend-layout>

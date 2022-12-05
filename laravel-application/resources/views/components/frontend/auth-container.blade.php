@@ -18,7 +18,7 @@
                             </div>
                         </div>
                         @if($displayCompanyInfo == 'true')
-                        <div class="lg:w-6/12 flex items-center lg:rounded-r-lg rounded-b-lg lg:rounded-bl-none" style="background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);">
+                        <div class="lg:w-6/12 flex items-center lg:rounded-r-lg rounded-b-lg lg:rounded-bl-none bg-fancy">
                             <div class="text-white px-4 py-6 md:p-12 md:mx-6">
                                 <h4 class="text-xl font-semibold mb-6">We are more than just a company</h4>
                                 <p class="text-sm">
