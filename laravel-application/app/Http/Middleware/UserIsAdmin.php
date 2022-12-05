@@ -17,7 +17,7 @@ class UserIsAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::check() && (Auth::user()->getPermission('admin') || Auth::user()->getPermission('master')))
+        if(!Auth::guest() && (Auth::user()->getPermission('admin') || Auth::user()->getPermission('master')))
         {
             return $next($request);
         }

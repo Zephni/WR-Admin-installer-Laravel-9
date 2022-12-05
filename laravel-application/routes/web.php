@@ -9,8 +9,8 @@ if (env('APP_ENV') === 'local') {
         Route::get('/set-permissions', function () {
             $user = App\Models\User::where('email', 'zephni@hotmail.co.uk')->first();
             $user->permissions = [
-                'admin'  => true, // admin means can access admin section, if authenticated but admin is false, then this application allows general authenticated users
                 'master' => true, // master means can do anything, may want to add more granular permissions later
+                'admin'  => true, // admin means can access admin section, if authenticated but admin is false, then this application allows general authenticated users
                 // examples of granular permissions:
                 // 'tables.create' => ['table_name', ...],
                 // 'tables.update' => ['table_name', ...],
@@ -45,6 +45,8 @@ Route::controller(App\Http\Controllers\AuthController::class)->group(function ()
 
 /* Admin routes
 ----------------------------------------------------------------*/
-Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
-    Route::get('/', function () {return 'Logged in as admin';})->name('admin-home');
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], function () {
+    Route::get('/', function () {
+        return 'Logged in as admin';
+    })->name('admin-home');
 });
