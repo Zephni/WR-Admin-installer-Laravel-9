@@ -29,7 +29,7 @@ Route::view('/', 'home')->name('home');
 /* Auth routes
 ----------------------------------------------------------------*/
 Route::controller(App\Http\Controllers\AuthController::class)->group(function () {
-    Route::middleware('redirect_if_authenticated')->group(function(){
+    Route::middleware('guest')->group(function(){
         // Login
         Route::get('/login', 'login')->name('login');
         Route::post('/login-post', 'login_post')->name('login-post');
@@ -37,6 +37,14 @@ Route::controller(App\Http\Controllers\AuthController::class)->group(function ()
         // Register
         Route::get('/register', 'register')->name('register');
         Route::post('/register-post', 'register_post')->name('register-post');
+
+        // Forgot password
+        Route::get('/forgot-password', 'forgot_password')->name('forgot-password');
+        Route::post('/forgot-password-send-request', 'forgot_password_send_request')->name('forgot-password-send-request');
+
+        // Reset password
+        Route::get('/reset-password/{token}', 'reset_password')->name('password.reset');
+        Route::post('/reset-password-post', 'reset_password_post')->name('reset-password-post');
     });
 
     // Logout

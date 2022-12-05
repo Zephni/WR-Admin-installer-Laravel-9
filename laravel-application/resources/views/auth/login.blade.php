@@ -2,6 +2,9 @@
     <x-slot name="title">Login</x-slot>
 
     <x-frontend.auth-container>
+        @if(session('status'))
+            <x-alert type="success">{{ session('status') }}</x-alert>
+        @endif
         @foreach($errors->all() as $message)
             <x-alert>{{ $message }}</x-alert>
         @endforeach
@@ -21,7 +24,7 @@
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="light"
                     value="Log in" />
-                <a class="text-gray-500" href="#!">Forgot password?</a>
+                <a class="text-gray-500" href="{{ route('forgot-password') }}">Forgot password?</a>
             </div>
             <div class="flex items-center justify-between pb-6">
                 <p class="mb-0 mr-2 text-sm">Don't have an account?</p>
