@@ -40,10 +40,8 @@ Route::controller(App\Http\Controllers\AuthController::class)->group(function ()
 /* Admin routes
 ----------------------------------------------------------------*/
 // TODO - Build default admin section
-Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], function () {
-    Route::get('/', function () {
-        return 'Logged in as admin';
-    })->name('admin-home');
+Route::group(['prefix' => 'manage'], function () {
+    Route::view('/', 'admin.dashboard')->name('admin.dashboard');
 });
 
 /* Temporary routes for testing purposes (will only work if env is local)
