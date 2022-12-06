@@ -13,8 +13,8 @@
     </head>
     <body class="bg-gray-200">
         {{-- Header --}}
-        <section class="flex py-6 bg-slate-800 text-white shadow-md shadow-orange-400">
-            <div class="container mx-auto flex justify-between px-6">
+        <section class="py-6 bg-slate-800 text-white shadow-md shadow-orange-400">
+            <div class="container flex justify-end md:justify-between mx-auto px-6">
                 <p>
                     <a href="{{ route('home') }}">{{ env('APP_NAME') }}</a>
                 </p>

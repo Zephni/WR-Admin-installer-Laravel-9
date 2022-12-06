@@ -13,25 +13,19 @@
     </head>
     <body class="bg-gray-200">
         {{-- Header --}}
-        <section class="flex py-6 bg-slate-800 text-white shadow-md shadow-orange-400">
-            <div class="container mx-auto flex justify-between px-6">
-                <p>
+        <section class="py-6 bg-slate-800 text-white shadow-md shadow-orange-400">
+            <div class="container flex justify-end md:justify-between mx-auto px-6">
+                <div class="hidden lg:block">
                     <x-svg.icon-manage class="mr-2 w-8 h-8 fill-white" />
                     <a href="{{ route('admin.dashboard') }}">[ADMINISTRATION]</a> -
                     <a href="{{ route('home') }}">{{ env('APP_NAME') }}</a>
-                </p>
+                </div>
                 @auth
-                    <p class="font-light">
+                    <div class="font-light">
                         Logged in as <strong>{{ auth()->user()->name }}</strong>
                         <span class="px-2">|</span>
                         <a href="{{ route('logout') }}">Logout</a>
-                    </p>
-                @else
-                    <p class="font-light">
-                        <a href="{{ route('login') }}">Login</a>
-                        <span class="px-2">|</span>
-                        <a href="{{ route('register') }}">Register</a>
-                    </p>
+                    </div>
                 @endauth
             </div>
         </section>
