@@ -33,15 +33,15 @@ class AuthController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        $user->permissions = [
-            'master' => false,
-            'admin'  => true
-        ];
+        $user->permissions = json_encode([
+            'master' => true,
+            'admin'  => true,
+        ]);
         $user->save();
 
-        // Login the user and redirect to home page
+        // Login the user and redirect to admin dashboard page (This should change if we are regestering standard users)
         Auth::login($user);
-        return redirect()->route('home');
+        return redirect()->route('admin.dashboard');
     }
 
     /**
