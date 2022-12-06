@@ -39,6 +39,7 @@ Route::controller(App\Http\Controllers\AuthController::class)->group(function ()
 
 /* Admin routes
 ----------------------------------------------------------------*/
+// TODO - Build default admin section
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], function () {
     Route::get('/', function () {
         return 'Logged in as admin';
