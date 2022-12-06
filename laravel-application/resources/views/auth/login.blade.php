@@ -12,7 +12,7 @@
             @csrf
             <p class="mb-4">Please login to your account</p>
             <div class="mb-4">
-                <x-input-text name="email" placeholder="Email"></x-input-text>
+                <x-input-text name="email" placeholder="Email" value="{{ session('email') ?? '' }}"></x-input-text>
             </div>
             <div class="mb-4">
                 <x-input-text type="password" name="password" placeholder="Password"></x-input-text>
@@ -24,7 +24,7 @@
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="light"
                     value="Log in" />
-                <a class="text-gray-500" href="{{ route('forgot-password') }}">Forgot password?</a>
+                <a class="text-gray-500" href="{{ route('password.forgot') }}">Forgot password?</a>
             </div>
             <div class="flex items-center justify-between pb-6">
                 <p class="mb-0 mr-2 text-sm">Don't have an account?</p>

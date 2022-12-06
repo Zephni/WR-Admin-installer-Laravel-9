@@ -8,7 +8,7 @@
         @foreach($errors->all() as $message)
             <x-alert>{{ $message }}</x-alert>
         @endforeach
-        <form action="{{ route('reset-password-post') }}" method="POST">
+        <form action="{{ route('password.reset.request') }}" method="POST">
             @csrf
             <input type="hidden" name="token" value="{{ $token }}">
             <h4 class="text-xl font-semibold mt-1 mb-4 pb-1">Reset password</h4>

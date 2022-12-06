@@ -27,7 +27,7 @@
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="light"
                     value="Register" />
-                <a class="text-gray-500" href="#!">Forgot password?</a>
+                <a class="text-gray-500" href="{{ route('password.forgot') }}">Forgot password?</a>
             </div>
         </form>
     </x-frontend.auth-container>

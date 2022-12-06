@@ -9,17 +9,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
-    // Register view
-    public function register(Request $request)
-    {
-        return view('auth.register');
-    }
 
-    // Register post
-    public function register_post(Request $request)
+    /**
+     * register
+     * Register a new user (post request)
+     * @param  mixed $request
+     * @return Response
+     */
+    public function register(Request $request): Response
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -38,14 +39,13 @@ class AuthController extends Controller
         return redirect()->route('home');
     }
 
-    // Login view
-    public function login(Request $request)
-    {
-        return view('auth.login');
-    }
-
-    // Login post
-    public function login_post(Request $request)
+    /**
+     * login
+     * Login (post request)
+     * @param  mixed $request
+     * @return Response
+     */
+    public function login(Request $request): Response
     {
         $request->validate([
             'email' => 'required|email',
@@ -65,14 +65,14 @@ class AuthController extends Controller
         ]);
     }
 
-    // Forgot password
-    public function forgot_password(Request $request)
-    {
-        return view('auth.forgot-password');
-    }
 
-    // Forgot password send request
-    public function forgot_password_send_request(Request $request)
+    /**
+     * forgot_password
+     * Forgot password (post request), sends email to user with reset link
+     * @param  mixed $request
+     * @return Response
+     */
+    public function forgot_password(Request $request): Response
     {
         $request->validate(['email' => 'required|email']);
 
@@ -85,17 +85,13 @@ class AuthController extends Controller
                 : back()->withErrors(['email' => __($status)]);
     }
 
-    // Reset password
-    public function reset_password(Request $request, $token)
-    {
-        return view('auth.reset-password', [
-            'token' => $token,
-            'email' => $request->email ?? ''
-        ]);
-    }
-
-    // Reset password post
-    public function reset_password_post(Request $request)
+    /**
+     * reset_password
+     * Resets a users password by timed token sent to email if valid (post request)
+     * @param  mixed $request
+     * @return Response
+     */
+    public function reset_password(Request $request): Response
     {
         $request->validate([
             'token' => 'required',
@@ -117,12 +113,18 @@ class AuthController extends Controller
         );
 
         return $status === Password::PASSWORD_RESET
-                ? redirect()->route('login')->with('status', __($status))
+                ? redirect()->route('login')->with(['status' => __($status), 'email' => $request->email])
                 : back()->withErrors(['email' => [__($status)]]);
     }
 
-    // Logout
-    public function logout(Request $request)
+
+    /**
+     * logout
+     * Logout the current user (post request)
+     * @param  mixed $request
+     * @return Response
+     */
+    public function logout(Request $request): Response
     {
         Auth::logout();
 

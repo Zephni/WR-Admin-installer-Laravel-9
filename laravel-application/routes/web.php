@@ -1,6 +1,49 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpFoundation\Request;
+
+/* Frontend routes
+----------------------------------------------------------------*/
+Route::view('/', 'home')->name('home');
+
+/* Auth routes
+----------------------------------------------------------------*/
+Route::controller(App\Http\Controllers\AuthController::class)->group(function () {
+    Route::middleware('guest')->group(function(){
+        // Login
+        Route::view('/login', 'auth.login')->name('login');
+        Route::post('/login', 'login')->name('login-post');
+
+        // Register
+        Route::view('/register', 'auth.register')->name('register');
+        Route::post('/register', 'register')->name('register-post');
+
+        // Forgot password
+        Route::view('/forgot-password', 'auth.forgot-password')->name('password.forgot');
+        Route::post('/forgot-password', 'forgot_password')->name('password.forgot.request');
+
+        // Reset password
+        Route::get('/reset-password/{token}', function(Request $request, $token){
+            return view('auth.reset-password', [
+                'token' => $token,
+                'email' => $request->email ?? ''
+            ]);
+        })->name('password.reset');
+        Route::post('/reset-password', 'reset_password')->name('password.reset.request');
+    });
+
+    // Logout
+    Route::get('/logout', 'logout')->name('logout');
+});
+
+/* Admin routes
+----------------------------------------------------------------*/
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], function () {
+    Route::get('/', function () {
+        return 'Logged in as admin';
+    })->name('admin-home');
+});
 
 /* Temporary routes for testing purposes (will only work if env is local)
 ----------------------------------------------------------------*/
@@ -21,40 +64,3 @@ if (env('APP_ENV') === 'local') {
         });
     });
 }
-
-/* Frontend routes
-----------------------------------------------------------------*/
-Route::view('/', 'home')->name('home');
-
-/* Auth routes
-----------------------------------------------------------------*/
-Route::controller(App\Http\Controllers\AuthController::class)->group(function () {
-    Route::middleware('guest')->group(function(){
-        // Login
-        Route::get('/login', 'login')->name('login');
-        Route::post('/login-post', 'login_post')->name('login-post');
-
-        // Register
-        Route::get('/register', 'register')->name('register');
-        Route::post('/register-post', 'register_post')->name('register-post');
-
-        // Forgot password
-        Route::get('/forgot-password', 'forgot_password')->name('forgot-password');
-        Route::post('/forgot-password-send-request', 'forgot_password_send_request')->name('forgot-password-send-request');
-
-        // Reset password
-        Route::get('/reset-password/{token}', 'reset_password')->name('password.reset');
-        Route::post('/reset-password-post', 'reset_password_post')->name('reset-password-post');
-    });
-
-    // Logout
-    Route::get('/logout', 'logout')->name('logout');
-});
-
-/* Admin routes
-----------------------------------------------------------------*/
-Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], function () {
-    Route::get('/', function () {
-        return 'Logged in as admin';
-    })->name('admin-home');
-});
