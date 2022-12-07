@@ -39,9 +39,13 @@ Route::controller(App\Http\Controllers\AuthController::class)->group(function ()
 
 /* Admin routes
 ----------------------------------------------------------------*/
-// TODO - Build default admin section
-Route::group(['prefix' => 'manage'], function () {
-    Route::view('/', 'admin.dashboard')->name('admin.dashboard');
+Route::controller(\App\Http\Controllers\AdminController::class)->prefix('manage')->group(function () {
+    // Dashboard
+    Route::get('/', function () { return redirect()->route('admin.dashboard'); });
+    Route::view('/dashboard', 'admin.dashboard')->name('admin.dashboard');
+
+    // Logout
+    Route::get('/logout', 'logout')->name('admin.logout');
 });
 
 /* Temporary routes for testing purposes (will only work if env is local)

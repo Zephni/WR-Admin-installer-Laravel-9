@@ -21,6 +21,10 @@
                 @auth
                     <p class="font-light">
                         Logged in as <strong>{{ auth()->user()->name }}</strong>
+                        @if(auth()->user()->getPermission('admin') == true)
+                            <span class="px-2">|</span>
+                            <a href="{{ route('admin.dashboard') }}">Admin</a>
+                        @endif
                         <span class="px-2">|</span>
                         <a href="{{ route('logout') }}">Logout</a>
                     </p>
