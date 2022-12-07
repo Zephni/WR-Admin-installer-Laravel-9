@@ -16,24 +16,6 @@ return [
     ],[
         'manageableModels' => true,
     ],[
-        'title' => 'Settings',
-        'icon' => 'bi bi-gear-fill',
-        'route' => 'home',
-        'children' => [
-            [
-                'title' => 'General',
-                'route' => 'home',
-            ],
-            [
-                'title' => 'Security',
-                'route' => 'home',
-            ],
-            [
-                'title' => 'Notifications',
-                'route' => 'home',
-            ],
-        ],
-    ],[
         'seperator' => true,
     ],[
         'title' => 'Logout',
