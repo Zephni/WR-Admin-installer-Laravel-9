@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use Str;
+
 /**
  * ManageableModel
  *
@@ -30,13 +32,12 @@ trait ManageableModel
         return false;
     }
 
-    public function getTableName(): string
-    {
-        // Get the table model name that this trait belongs to
-        return (new \ReflectionClass($this))->getName();
-    }
-
-    public function getHumanName(): string
+    /**
+     * getHumanName
+     * Gets the human name of the model
+     * @return string
+     */
+    public function getHumanName(bool $plural = true): string
     {
         // Get the table model name that this trait belongs to
         $tableName = (new \ReflectionClass($this))->getName();
@@ -50,7 +51,7 @@ trait ManageableModel
         // Convert to title case
         $tableName = ucwords(str_replace('_', ' ', $tableName));
 
-        return $tableName;
+        return $plural ? Str::plural($tableName) : Str::singular($tableName);
     }
 
     /**

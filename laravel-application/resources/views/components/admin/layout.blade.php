@@ -59,7 +59,7 @@
                                                 @if(true)
                                                     <span class="absolute inset-y-0 -left-1 w-1 bg-blue-500 rounded-tr-sm rounded-br-sm" aria-hidden="true"></span>
                                                 @endif
-                                                {{ Str::plural($manageableModelInstance->getHumanName()) }}
+                                                {{ $manageableModelInstance->getHumanName() }}
                                             </span>
                                         </a>
                                         <button type="button" class="flex items-center flex-shrink p-2 text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700" aria-controls="nav-dropdown-{{ $navigationItemID }}" data-collapse-toggle="nav-dropdown-{{ $navigationItemID }}">

@@ -16,7 +16,7 @@ class User extends Authenticatable
 {
     use ManageableModel, HasApiTokens, HasFactory, Notifiable;
 
-    /* ManageableModel trait
+    /* ManageableModel traits
     -----------------------------------------------------------*/
     public function isViewable(): bool
     {
