@@ -51,4 +51,4 @@
             </tbody>
         </table>
     </section>
-</x-frontend-layout>
+</x-frontend.layout>

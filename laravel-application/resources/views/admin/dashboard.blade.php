@@ -1,4 +1,4 @@
-<x-admin.layout>
+<x-admin-layout>
 
     <x-slot name="title">Dashboard</x-slot>
 
@@ -15,4 +15,4 @@
         that they should not have access to.<br />
     </p>
 
-</x-admin.layout>
+</x-admin-layout>

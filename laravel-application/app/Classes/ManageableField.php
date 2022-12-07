@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Classes\ManageableModel;
+namespace App\ManageableModel;
 
 class ManageableField
 {

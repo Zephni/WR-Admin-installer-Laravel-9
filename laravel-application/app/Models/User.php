@@ -4,16 +4,43 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 // use Attribute;
+use App\Traits\ManageableModel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use ManageableModel, HasApiTokens, HasFactory, Notifiable;
 
+    /* ManageableModel trait
+    -----------------------------------------------------------*/
+    public function isViewable(): bool
+    {
+        return Auth::user()->isMaster();
+    }
+
+    public function isCreatable(): bool
+    {
+        return Auth::user()->isMaster();
+    }
+
+    public function isEditable(): bool
+    {
+        return Auth::user()->isMaster();
+    }
+
+    public function isDeletable(): bool
+    {
+        return Auth::user()->isMaster();
+    }
+
+
+    /* Attribute modifiers
+    -----------------------------------------------------------*/
     /**
      * The attributes that are mass assignable.
      *
@@ -45,6 +72,8 @@ class User extends Authenticatable
         'permissions' => 'json',
     ];
 
+    /* Custom methods
+    -----------------------------------------------------------*/
     // permissions attribute setter / getter
     public function permissions():Attribute
     {
@@ -71,6 +100,7 @@ class User extends Authenticatable
         return $this->hasPermission('master') && $this->permissions->master === true;
     }
 
+    // permissionGreaterOrEqualTo method
     public function permissionGreaterOrEqualTo(string $permission, int $value):bool {
         if($this->isMaster()) return true;
         return $this->getPermission($permission) >= $value;

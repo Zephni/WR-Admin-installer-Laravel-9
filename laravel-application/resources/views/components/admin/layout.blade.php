@@ -28,13 +28,54 @@
                     </p>
                 </a>
                 <ul class="space-y-2">
-                    @foreach(config('admin-navigation') as $navigationItem)
+                    @php
+                        $navigationItemID = 0;
+                    @endphp
+                    @foreach($navigation as $navigationItem)
+                        @php
+                            $navigationItemID++;
+                        @endphp
                         {{-- If pure HTML --}}
                         @if(isset($navigationItem['html']))
                             {!! $navigationItem['html'] !!}
                         {{-- If seperator --}}
                         @elseif(isset($navigationItem['seperator']) && $navigationItem['seperator'] === true)
                             <li class="relative border-t border-gray-700"></li>
+                        {{-- If manageable models --}}
+                        @elseif(isset($navigationItem['manageableModels']) && $navigationItem['manageableModels'] == true)
+                            @foreach($manageableModels as $manageableModel)
+                                @php
+                                    // Get an instance of this model
+                                    $manageableModelInstance = app($manageableModel);
+                                @endphp
+                                @if(!$manageableModelInstance->isViewable())
+                                    @continue
+                                @endif
+                                <li class="relative">
+                                    <div class="flex justify-between">
+                                        <a href="{{ route('home') }}" class="group flex flex-grow items-center p-2 text-base font-normal rounded-lg text-white hover:bg-gray-700">
+                                            <i class="bi bi-gear-fill mr-4 text-2xl text-gray-400 group-hover:text-white"></i>
+                                            <span class="flex-1 text-left whitespace-nowrap text-white" sidebar-toggle-item>
+                                                @if(true)
+                                                    <span class="absolute inset-y-0 -left-1 w-1 bg-blue-500 rounded-tr-sm rounded-br-sm" aria-hidden="true"></span>
+                                                @endif
+                                                {{ Str::plural($manageableModelInstance->getHumanName()) }}
+                                            </span>
+                                        </a>
+                                        <button type="button" class="flex items-center flex-shrink p-2 text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700" aria-controls="nav-dropdown-{{ $navigationItemID }}" data-collapse-toggle="nav-dropdown-{{ $navigationItemID }}">
+                                            <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                        </button>
+                                    </div>
+                                    <ul id="nav-dropdown-{{ $navigationItemID }}" class="hidden py-2 space-y-2">
+                                        @if($manageableModelInstance->isCreatable())
+                                            <li><a href="{{ route('home') }}" class="flex items-center p-2 pl-11 w-full text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700">Create</a></li>
+                                        @endif
+                                        @if($manageableModelInstance->isViewable())
+                                            <li><a href="{{ route('home') }}" class="flex items-center p-2 pl-11 w-full text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700">Browse</a></li>
+                                        @endif
+                                    </ul>
+                                </li>
+                            @endforeach
                         {{-- If nav item does not have children --}}
                         @elseif(!isset($navigationItem['children']))
                             <li class="relative">
@@ -65,11 +106,11 @@
                                             {!! $navigationItem['title'] !!}
                                         </span>
                                     </a>
-                                    <button type="button" class="flex items-center flex-shrink p-2 text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700" aria-controls="nav-dropdown-{{ $loop->index }}" data-collapse-toggle="nav-dropdown-{{ $loop->index }}">
+                                    <button type="button" class="flex items-center flex-shrink p-2 text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700" aria-controls="nav-dropdown-{{ $navigationItemID }}" data-collapse-toggle="nav-dropdown-{{ $navigationItemID }}">
                                         <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                     </button>
                                 </div>
-                                <ul id="nav-dropdown-{{ $loop->index }}" class="hidden py-2 space-y-2">
+                                <ul id="nav-dropdown-{{ $navigationItemID }}" class="hidden py-2 space-y-2">
                                     @foreach($navigationItem['children'] as $child)
                                         <li>
                                             <a href="{{ route($child['route']) }}" class="flex items-center p-2 pl-11 w-full text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700">{{ $child['title'] }}</a>

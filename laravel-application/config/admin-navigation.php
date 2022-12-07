@@ -1,5 +1,7 @@
 <?php
 
+use \Illuminate\Support\Facades\Route;
+
 return [
     [
         'title' => 'Frontend <span class="text-sm">['.env('APP_URL').']</span>',
@@ -11,6 +13,8 @@ return [
         'title' => 'Dashboard',
         'icon' => 'bi bi-speedometer',
         'route' => 'admin.dashboard',
+    ],[
+        'manageableModels' => true,
     ],[
         'title' => 'Settings',
         'icon' => 'bi bi-gear-fill',
@@ -33,7 +37,7 @@ return [
         'seperator' => true,
     ],[
         'title' => 'Logout',
-        'icon' => 'bi bi-door-closed-fill',
-        'route' => 'logout',
+        'icon' => 'bi bi-speedometer',
+        'route' => 'admin.logout',
     ],
 ];
