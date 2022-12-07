@@ -37,7 +37,7 @@ return [
         'seperator' => true,
     ],[
         'title' => 'Logout',
-        'icon' => 'bi bi-speedometer',
+        'icon' => 'bi bi-door-closed-fill',
         'route' => 'admin.logout',
     ],
 ];
