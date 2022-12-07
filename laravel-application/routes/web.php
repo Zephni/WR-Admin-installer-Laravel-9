@@ -44,6 +44,10 @@ Route::controller(\App\Http\Controllers\AdminController::class)->prefix('manage'
     Route::get('/', function () { return redirect()->route('admin.dashboard'); });
     Route::view('/dashboard', 'admin.dashboard')->name('admin.dashboard');
 
+    // Manageable models
+    Route::get('/manageable-models/{model}', 'manageable_model_browse')->name('admin.manageable-models.browse');
+    Route::get('/manageable-models/{model}/create', 'manageable_model_create')->name('admin.manageable-models.create');
+
     // Logout
     Route::get('/logout', 'logout')->name('admin.logout');
 });

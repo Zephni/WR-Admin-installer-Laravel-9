@@ -32,6 +32,11 @@ trait ManageableModel
         return false;
     }
 
+    public static function getNewInstance(): self
+    {
+        return new self();
+    }
+
     /**
      * getHumanName
      * Gets the human name of the model

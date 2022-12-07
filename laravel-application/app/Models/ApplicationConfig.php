@@ -9,6 +9,8 @@ class ApplicationConfig extends Model
 {
     use ManageableModel;
 
+    protected $table = 'application_config';
+
     /* ManageableModel traits
     -----------------------------------------------------------*/
     public function isViewable(): bool

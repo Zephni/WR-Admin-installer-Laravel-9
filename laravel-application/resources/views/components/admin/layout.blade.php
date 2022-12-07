@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>{{ $title }} [Admin] - {{ env('APP_NAME') }}</title>
+        <title>{{ $title ?? '' }} [Admin] - {{ env('APP_NAME') }}</title>
 
         {{-- Styles / JS --}}
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -53,7 +53,7 @@
                                 @endif
                                 <li class="relative">
                                     <div class="flex justify-between">
-                                        <a href="{{ route('home') }}" class="group flex flex-grow items-center p-2 text-base font-normal rounded-lg text-white hover:bg-gray-700">
+                                        <a href="{{ route('admin.manageable-models.browse', $manageableModelInstance->getTable()) }}" class="group flex flex-grow items-center p-2 text-base font-normal rounded-lg text-white hover:bg-gray-700">
                                             <i class="bi bi-gear-fill mr-4 text-2xl text-gray-400 group-hover:text-white"></i>
                                             <span class="flex-1 text-left whitespace-nowrap text-white" sidebar-toggle-item>
                                                 @if(true)
@@ -68,10 +68,10 @@
                                     </div>
                                     <ul id="nav-dropdown-{{ $navigationItemID }}" class="hidden py-2 space-y-2">
                                         @if($manageableModelInstance->isCreatable())
-                                            <li><a href="{{ route('home') }}" class="flex items-center p-2 pl-11 w-full text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700">Create</a></li>
+                                            <li><a href="{{ route('admin.manageable-models.create', $manageableModelInstance->getTable()) }}" class="flex items-center p-2 pl-11 w-full text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700">Create</a></li>
                                         @endif
                                         @if($manageableModelInstance->isViewable())
-                                            <li><a href="{{ route('home') }}" class="flex items-center p-2 pl-11 w-full text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700">Browse</a></li>
+                                            <li><a href="{{ route('admin.manageable-models.browse', $manageableModelInstance->getTable()) }}" class="flex items-center p-2 pl-11 w-full text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700">Browse</a></li>
                                         @endif
                                     </ul>
                                 </li>
@@ -126,6 +126,7 @@
 
         {{-- MAIN --}}
         <main class="container mx-auto mt-4 px-4">
+            <div class="w-full h-8"></div>
             {{ $slot }}
         </main>
 

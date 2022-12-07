@@ -25,6 +25,26 @@ class AdminLayout extends Component
      */
     public function render()
     {
+        // Get manageable models
+        $manageableModels = $this->getManageableModels();
+
+        $data = [
+            'navigation' => config('admin-navigation'),
+            'manageableModels' => $manageableModels,
+        ];
+
+        // dd($data);
+
+        return view('components.admin.layout', $data);
+    }
+
+    /**
+     * Get manageable models
+     *
+     * @return Collection
+     */
+    private function getManageableModels(): Collection
+    {
         // Get all classes that use the ManageableModel trait
         $manageableModels = new Collection();
 
@@ -40,13 +60,6 @@ class AdminLayout extends Component
             }
         }
 
-        $data = [
-            'navigation' => config('admin-navigation'),
-            'manageableModels' => $manageableModels,
-        ];
-
-        // dd($data);
-
-        return view('components.admin.layout', $data);
+        return $manageableModels;
     }
 }
