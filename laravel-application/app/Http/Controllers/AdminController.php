@@ -9,19 +9,23 @@ use Illuminate\Contracts\View\View;
 
 class AdminController extends Controller
 {
+    /**
+     * manageable_model_browse
+     *
+     * @param  mixed $request
+     * @param  mixed $table
+     * @return View
+     */
     public function manageable_model_browse(Request $request, string $table): View
     {
-        // Get model name from table name
-        $model = Str::studly(Str::singular($table));
-
         // Get this model's class
-        $modelClass = 'App\Models\\' . $model;
+        $modelClass = $this->getModelFromTable($table);
 
         // Get instance of this model
         $model = new $modelClass();
 
-        // Get all columns
-        $columns = $model->getConnection()->getSchemaBuilder()->getColumnListing($model->getTable());
+        // Get browseable columns
+        $columns = $model->getBrowsableColumns();
 
         // Get this model's rows
         $rows = $model->all();
@@ -32,8 +36,25 @@ class AdminController extends Controller
         // Return view
         return view('admin.manageable-models.browse', [
             'model' => $model,
-            'rows' => $rows,
             'columns' => $columns,
+            'rows' => $rows,
         ]);
+    }
+
+    // TODO: Add manageable_model_add
+
+    // TODO: Add manageable_model_edit
+
+    // TODO: Add manageable_model_delete
+
+    /**
+     * getModelFromTable
+     * Returns a string of the fully qualified model class name from the table name
+     * @param  mixed $table
+     * @return string
+     */
+    private function getModelFromTable(string $table): string
+    {
+        return 'App\Models\\'.Str::studly(Str::singular($table));
     }
 }

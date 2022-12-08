@@ -38,6 +38,14 @@ class User extends Authenticatable
         return Auth::user()->isMaster();
     }
 
+    public function getBrowsableColumns(): array
+    {
+        return [
+            'name',
+            'email'
+        ];
+    }
+
 
     /* Attribute modifiers
     -----------------------------------------------------------*/

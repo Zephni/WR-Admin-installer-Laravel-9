@@ -32,6 +32,21 @@ trait ManageableModel
         return false;
     }
 
+    public function browseActions(): array
+    {
+        $actions = [];
+
+        if($this->isEditable()) {
+            $actions['edit'] = '/url-here';
+        }
+
+        if($this->isDeletable()) {
+            $actions['delete'] = '/url-here';
+        }
+
+        return $actions;
+    }
+
     public static function getNewInstance(): self
     {
         return new self();
@@ -57,6 +72,16 @@ trait ManageableModel
         $tableName = ucwords(str_replace('_', ' ', $tableName));
 
         return $plural ? Str::plural($tableName) : Str::singular($tableName);
+    }
+
+    /**
+     * getBrowsableColumns
+     * Returns an array of columns (fields) that can be seen in the browse view
+     * @return array
+     */
+    public function getBrowsableColumns(): array
+    {
+        return [];
     }
 
     /**

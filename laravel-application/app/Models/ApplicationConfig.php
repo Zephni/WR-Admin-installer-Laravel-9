@@ -37,4 +37,13 @@ class ApplicationConfig extends Model
     {
         return 'Application Config';
     }
+
+    public function getBrowsableColumns(): array
+    {
+        return [
+            '_key',
+            '_value',
+            '_type'
+        ];
+    }
 }
