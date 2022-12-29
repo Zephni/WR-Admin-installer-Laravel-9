@@ -8,7 +8,7 @@ class ManageableField
     public string $type;
     public string $value;
     public array $options = [
-        'hide' => false,
+        'placeholder' => '',
     ];
 
     /**
@@ -24,20 +24,6 @@ class ManageableField
         $this->name = $name;
         $this->type = $type;
         $this->value = $defaultValue ?? '';
-    }
-
-    /**
-     * render
-     * Do not override this method, it is used by the views to check if the field is renderable first
-     * @return mixed
-     */
-    public function renderCheck()
-    {
-        if (isset($this->options['hide']) && $this->options['hide'] === true) {
-            return '';
-        }
-
-        return $this->render();
     }
 
     /**
@@ -60,5 +46,10 @@ class ManageableField
     {
         $this->options = array_merge($this->options, $options);
         return $this;
+    }
+
+    public function getPlaceholder(): string
+    {
+        return $this->options['placeholder'] ?? 'Enter ' . \Str::lower(\Str::title($this->name));
     }
 }

@@ -23,7 +23,7 @@
                 @if(is_string($field))
                     {!! $field !!}
                 @elseif(is_a($field, \App\Classes\ManageableFields\ManageableField::class))
-                    {{ $field->renderCheck() }}
+                    {{ $field->render() }}
                 @endif
             @endforeach
 
