@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use Str;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * ManageableModel
@@ -32,6 +33,12 @@ trait ManageableModel
         return false;
     }
 
+    /**
+     * browseActions
+     * Should return an array of actions that can be performed on the model in the browse view
+     * Key is the action name, value is the url
+     * @return array
+     */
     public function browseActions(): array
     {
         $actions = [];
@@ -47,9 +54,26 @@ trait ManageableModel
         return $actions;
     }
 
-    public static function getNewInstance(): self
+    /**
+     * onCreateHook
+     * Intercept and modify request when the model is created (ran just before model values are updated)
+     * Should use $request->merge() to add or replace values to the request
+     * @return Request
+     */
+    public function onCreateHook(Request $request): Request
     {
-        return new self();
+        return $request;
+    }
+
+    /**
+     * onEditHook
+     * Intercept and modify request when the model is edited (ran just before model values are updated)
+     * Should use $request->merge() to add or replace values to the request
+     * @return Request
+     */
+    public function onEditHook(Request $request): Request
+    {
+        return $request;
     }
 
     /**
@@ -92,5 +116,15 @@ trait ManageableModel
     public function getManageableFields(): array
     {
         return [];
+    }
+
+    /**
+     * getNewInstance
+     * Gets a new instance of the model statically
+     * @return self
+     */
+    public static function getNewInstance(): self
+    {
+        return new self();
     }
 }

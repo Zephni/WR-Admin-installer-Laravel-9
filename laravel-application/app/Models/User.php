@@ -10,9 +10,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 use App\Classes\Permissions;
 use \App\Classes\ManageableFields as ManageableFields;
+use Symfony\Component\HttpFoundation\Request;
 
 class User extends Authenticatable
 {
@@ -40,6 +42,21 @@ class User extends Authenticatable
         return Auth::user()->isMaster();
     }
 
+    public function onCreateHook(Request $request): Request
+    {
+        return $request->merge([
+            'permissions' => (new Permissions())->asString(),
+            'password' => Hash::make($request->input('password'))
+        ]);
+    }
+
+    public function onEditHook(Request $request): Request
+    {
+        return $request->merge([
+            'password' => ($request->has('password') && !empty($request->input('password'))) ? Hash::make($request->input('password')) : $this->password
+        ]);
+    }
+
     public function getBrowsableColumns(): array
     {
         return [
@@ -54,6 +71,8 @@ class User extends Authenticatable
         $manageableFields[] = new ManageableFields\Input('name', $this->name);
         $manageableFields[] = new ManageableFields\Input('email', $this->email, 'email');
         $manageableFields[] = new ManageableFields\Input('permissions', $this->permissions);
+        $manageableFields[] = (new ManageableFields\Input('password', '', 'text'))->options(['placeholder' => 'Leave empty to keep current password']);
+        $manageableFields[] = '<p>Hashed password: ' . $this->password . '</p>';
 
         return $manageableFields;
     }

@@ -93,6 +93,65 @@ class AdminController extends Controller
         ]);
     }
 
+    /**
+     * manageableModelCreateSubmit
+     *
+     * @param  mixed $request
+     * @param  mixed $table
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function manageableModelCreateSubmit(Request $request, string $table)
+    {
+        // Get this model's class
+        $modelClass = $this->getModelFromTable($table);
+
+        // Get instance of this model
+        $model = new $modelClass();
+
+        // Run onCreateHook
+        $request = $model->onCreateHook($request);
+
+        // Get manageable fields
+        $fields = $model->getManageableFields();
+
+        // Loop through fields
+        foreach ($fields as $field) {
+            // Check if field is manageable field object
+            if (!($field instanceof \App\Classes\ManageableFields\ManageableField)) {
+                continue;
+            }
+
+            // Get field name
+            $fieldName = $field->name;
+
+            // Check if attribute exists on model table
+            if ($model->getAttribute($fieldName) == null) {
+                dump('Field '.$fieldName.' does not exist on table '.$model->getTable());
+                continue;
+            }
+
+            // Get field value
+            $fieldValue = $request->get($fieldName);
+
+            // Set field value
+            $model->$fieldName = $fieldValue;
+        }
+
+        // Save model
+        $model->save();
+
+        // Redirect to edit
+        return redirect()->route('admin.manageable-models.edit', ['table' => $table, 'id' => $model->id])->with('success', $model->getHumanName(false).' created successfully');
+    }
+
+    /**
+     * manageableModelEditSubmit
+     *
+     * @param  mixed $request
+     * @param  mixed $table
+     * @param  mixed $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function manageableModelEditSubmit(Request $request, string $table, int $id)
     {
         // Get this model's class
@@ -101,13 +160,27 @@ class AdminController extends Controller
         // Get instance of this model by id
         $model = $modelClass::find($id);
 
+        // Run onEditHook
+        $request = $model->onEditHook($request);
+
         // Get manageable fields
         $fields = $model->getManageableFields();
 
         // Loop through fields
         foreach ($fields as $field) {
+            // Check if field is manageable field object
+            if (!($field instanceof \App\Classes\ManageableFields\ManageableField)) {
+                continue;
+            }
+
             // Get field name
             $fieldName = $field->name;
+
+            // Check if attribute exists on model table
+            if ($model->getAttribute($fieldName) == null) {
+                dump('Field '.$fieldName.' does not exist on table '.$model->getTable());
+                continue;
+            }
 
             // Get field value
             $fieldValue = $request->get($fieldName);
@@ -122,6 +195,7 @@ class AdminController extends Controller
         // Redirect to browse
         return redirect()->route('admin.manageable-models.edit', ['table' => $table, 'id' => $id])->with('success', $model->getHumanName(false).' updated successfully');
     }
+
 
     // TODO: Add manageable_model_delete
 
