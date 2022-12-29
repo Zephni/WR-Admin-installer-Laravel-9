@@ -45,9 +45,10 @@ Route::controller(\App\Http\Controllers\AdminController::class)->prefix('manage'
     Route::view('/dashboard', 'admin.dashboard')->name('admin.dashboard');
 
     // Manageable models
-    Route::get('/manageable-models/{model}', 'manageableModelBrowse')->name('admin.manageable-models.browse');
-    Route::get('/manageable-models/{model}/create', 'manageableModelCreate')->name('admin.manageable-models.create');
-    Route::get('/manageable-models/{model}/edit/{id}', 'manageableModelEdit')->name('admin.manageable-models.edit');
+    Route::get('/manageable-models/{table}', 'manageableModelBrowse')->name('admin.manageable-models.browse');
+    Route::get('/manageable-models/{table}/create', 'manageableModelCreate')->name('admin.manageable-models.create');
+    Route::get('/manageable-models/{table}/edit/{id}', 'manageableModelEdit')->name('admin.manageable-models.edit');
+    Route::post('/manageable-models/{table}/edit/{id}', 'manageableModelEditSubmit')->name('admin.manageable-models.edit.submit');
 });
 
 /* Temporary routes for testing purposes (will only work if env is local)

@@ -50,11 +50,12 @@ class User extends Authenticatable
 
     public function getManageableFields(): array
     {
-        return [
-            new ManageableFields\Input('name', $this->name),
-            new ManageableFields\Input('email', $this->email, 'email'),
-            new ManageableFields\Input('permissions', $this->permissions, 'text'),
-        ];
+        $manageableFields = [];
+        $manageableFields[] = (new ManageableFields\Input('name', $this->name));
+        $manageableFields[] = (new ManageableFields\Input('email', $this->email, 'email'));
+        $manageableFields[] = (new ManageableFields\Input('permissions', $this->permissions));
+
+        return $manageableFields;
     }
 
 

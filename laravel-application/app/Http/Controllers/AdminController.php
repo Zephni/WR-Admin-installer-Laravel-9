@@ -93,7 +93,35 @@ class AdminController extends Controller
         ]);
     }
 
-    // TODO: Add manageable_model_edit
+    public function manageableModelEditSubmit(Request $request, string $table, int $id)
+    {
+        // Get this model's class
+        $modelClass = $this->getModelFromTable($table);
+
+        // Get instance of this model by id
+        $model = $modelClass::find($id);
+
+        // Get manageable fields
+        $fields = $model->getManageableFields();
+
+        // Loop through fields
+        foreach ($fields as $field) {
+            // Get field name
+            $fieldName = $field->name;
+
+            // Get field value
+            $fieldValue = $request->get($fieldName);
+
+            // Set field value
+            $model->$fieldName = $fieldValue;
+        }
+
+        // Save model
+        $model->save();
+
+        // Redirect to browse
+        return redirect()->route('admin.manageable-models.edit', ['table' => $table, 'id' => $id])->with('success', $model->getHumanName(false).' updated successfully');
+    }
 
     // TODO: Add manageable_model_delete
 

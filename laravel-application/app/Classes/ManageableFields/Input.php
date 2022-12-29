@@ -18,7 +18,7 @@ class Input extends ManageableField
             'value' => $this->value,
             'type' => $this->type,
             'attributes' => new ComponentAttributeBag([
-                'placeholder' => 'Enter ' . \Str::lower(\Str::title($this->name))
+                'placeholder' => (isset($this->options['placeholder'])) ? $this->options['placeholder'] : 'Enter ' . \Str::lower(\Str::title($this->name))
             ])
         ]);
     }
