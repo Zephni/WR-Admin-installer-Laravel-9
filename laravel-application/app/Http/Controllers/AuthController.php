@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
+use App\Classes\Permissions;
 
 class AuthController extends Controller
 {
@@ -33,10 +34,13 @@ class AuthController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        $user->permissions = json_encode([
-            'master' => true,
-            'admin'  => true,
+
+        $permissions = new Permissions([
+            'master' => false,
+            'admin' => true
         ]);
+        $user->permissions = $permissions->asString();
+
         $user->save();
 
         // Login the user and redirect to admin dashboard page (This should change if we are regestering standard users)

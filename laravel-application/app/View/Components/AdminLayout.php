@@ -55,8 +55,16 @@ class AdminLayout extends Component
         foreach ($models as $model) {
             $model = substr($model, 0, -4);
 
+            // Check if the model uses the ManageableModel trait
             if (in_array('App\Traits\ManageableModel', class_uses('App\Models\\' . $model))) {
-                $manageableModels->add('App\Models\\' . $model);
+                // Get an instance of the model
+                $modelReference = 'App\Models\\' . $model;
+                $modelInstance = $modelReference::getNewInstance();
+
+                // If the model is viewable, add it to the collection
+                if ($modelInstance->isViewable()) {
+                    $manageableModels->add($modelReference);
+                }
             }
         }
 

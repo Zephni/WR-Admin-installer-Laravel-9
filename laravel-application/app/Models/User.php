@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
+use App\Classes\Permissions;
 
 class User extends Authenticatable
 {
@@ -20,22 +21,22 @@ class User extends Authenticatable
     -----------------------------------------------------------*/
     public function isViewable(): bool
     {
-        return Auth::user()->isMaster();
+        return Auth::user() && Auth::user()->isMaster();
     }
 
     public function isCreatable(): bool
     {
-        return Auth::user()->isMaster();
+        return Auth::user() && Auth::user()->isMaster();
     }
 
     public function isEditable(): bool
     {
-        return Auth::user()->isMaster();
+        return Auth::user() && Auth::user()->isMaster();
     }
 
     public function isDeletable(): bool
     {
-        return Auth::user()->isMaster();
+        return Auth::user() && Auth::user()->isMaster();
     }
 
     public function getBrowsableColumns(): array
@@ -76,41 +77,23 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'permissions' => 'json',
+        'email_verified_at' => 'datetime'
     ];
 
     /* Custom methods
     -----------------------------------------------------------*/
-    // permissions attribute setter / getter
-    public function permissions():Attribute
+    public function getPermissions(): Permissions
     {
-        return Attribute::make(
-            // Setter turns value into json
-            set: fn($value) => $this->attributes['permissions'] = json_encode($value),
-            // Getter turns json into array
-            get: fn() => json_decode($this->attributes['permissions']) ?? [],
-        );
+        return Permissions::fromString($this->permissions);
     }
 
-    // hasPermission method
-    public function hasPermission(string $permission):bool {
-        return isset($this->permissions->$permission) ?? false;
+    public function getPermission(string $attribute): Permissions
+    {
+        return $this->getPermissions()->$attribute;
     }
 
-    // getPermission method
-    public function getPermission(string $permission) {
-        return $this->permissions->$permission ?? false;
-    }
-
-    // isMaster method
-    public function isMaster():bool {
-        return $this->hasPermission('master') && $this->permissions->master === true;
-    }
-
-    // permissionGreaterOrEqualTo method
-    public function permissionGreaterOrEqualTo(string $permission, int $value):bool {
-        if($this->isMaster()) return true;
-        return $this->getPermission($permission) >= $value;
+    public function isMaster(): bool
+    {
+        return $this->getPermissions()->master;
     }
 }

@@ -58,16 +58,17 @@ if (env('APP_ENV') === 'local') {
     Route::group(['prefix' => 'temp'], function(){
         Route::get('/set-permissions', function () {
             $user = App\Models\User::where('email', 'zephni@hotmail.co.uk')->first();
-            $user->permissions = [
-                'master' => true, // master means can do anything, may want to add more granular permissions later
-                'admin'  => true, // admin means can access admin section, if authenticated but admin is false, then this application allows general authenticated users
-                // examples of granular permissions:
-                // 'tables.create' => ['table_name', ...],
-                // 'tables.update' => ['table_name', ...],
-                // 'tables.delete' => ['table_name', ...],
-            ];
+            $permissions = new App\Classes\Permissions();
+            $permissions->master = false;
+            $permissions->admin = true;
+            $user->permissions = $permissions->asString();
             $user->save();
             dd($user->permissions);
+        });
+
+        Route::get('/get-permissions', function () {
+            $user = App\Models\User::where('email', 'zephni@hotmail.co.uk')->first();
+            dd($user->getPermissions());
         });
     });
 }

@@ -17,9 +17,18 @@ class UserIsAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!Auth::guest() && (Auth::user()->getPermission('admin') || Auth::user()->getPermission('master')))
+        if(!Auth::guest())
         {
-            return $next($request);
+            $permissions = Auth::user()->getPermissions();
+
+            if($permissions->master || $permissions->admin)
+            {
+                return $next($request);
+            }
+            else
+            {
+                return redirect()->route('home');
+            }
         }
         else
         {
