@@ -42,6 +42,14 @@ class User extends Authenticatable
         return Auth::user()->isMaster();
     }
 
+    public function browseActions(): array
+    {
+        $browseActions = $this->defaultBrowseActions();
+        return array_merge($browseActions, [
+            'login as' => 'login-as/'.$this->id
+        ]);
+    }
+
     public function onCreateHook(Request $request): Request
     {
         return $request->merge([
@@ -65,14 +73,24 @@ class User extends Authenticatable
         ];
     }
 
-    public function getManageableFields(): array
+    public function getManageableFields($pageType = 'any'): array
     {
         $manageableFields = [];
         $manageableFields[] = new ManageableFields\Input('name', $this->name);
         $manageableFields[] = new ManageableFields\Input('email', $this->email, 'email');
         $manageableFields[] = new ManageableFields\Input('permissions', $this->permissions);
-        $manageableFields[] = (new ManageableFields\Input('password', '', 'text'))->options(['placeholder' => 'Leave empty to keep current password']);
-        $manageableFields[] = '<p>Hashed password: ' . $this->password . '</p>';
+
+        if($pageType == 'create')
+        {
+            $manageableFields[] = (new ManageableFields\Input('password', '', 'password'));
+        }
+        if($pageType == 'edit')
+        {
+            $manageableFields[] = (new ManageableFields\Input('password', '', 'password'))->options(['placeholder' => 'Leave empty to keep current password']);
+            $manageableFields[] = '<p class="py-3">Hashed password: ' . $this->password . '</p>';
+            $manageableFields[] = '<p class="py-3">Created at: ' . $this->created_at . '</p>';
+            $manageableFields[] = '<p class="py-3">Last updated at: ' . $this->updated_at . '</p>';
+        }
 
         return $manageableFields;
     }

@@ -7,7 +7,11 @@
     <hr class="my-4 h-px bg-gray-500 border-0">
 
     <div class="w-full">
-        <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <form action="{{ route('admin.manageable-models.create.submit', ['table' => $model->getTable()]) }}" method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            @csrf
+
+            <x-admin.manageable-fields.input name="table" type="hidden" value="{{ $model->getTable() }}" />
+
             @foreach($fields as $field)
                 @if(is_string($field))
                     {!! $field !!}
@@ -15,6 +19,8 @@
                     {{ $field->render() }}
                 @endif
             @endforeach
+
+            <x-admin.manageable-fields.submit value="Create" />
         </form>
     </div>
 

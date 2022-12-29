@@ -47,8 +47,12 @@ Route::controller(\App\Http\Controllers\AdminController::class)->prefix('manage'
     // Manageable models
     Route::get('/manageable-models/{table}', 'manageableModelBrowse')->name('admin.manageable-models.browse');
     Route::get('/manageable-models/{table}/create', 'manageableModelCreate')->name('admin.manageable-models.create');
+    Route::post('/manageable-models/{table}/create', 'manageableModelCreateSubmit')->name('admin.manageable-models.create.submit');
     Route::get('/manageable-models/{table}/edit/{id}', 'manageableModelEdit')->name('admin.manageable-models.edit');
     Route::post('/manageable-models/{table}/edit/{id}', 'manageableModelEditSubmit')->name('admin.manageable-models.edit.submit');
+
+    // Special
+    Route::get('/login-as/{userid}', 'loginAsUser')->name('admin.login-as');
 });
 
 /* Temporary routes for testing purposes (will only work if env is local)

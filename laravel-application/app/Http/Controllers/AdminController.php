@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Str;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Contracts\View\View;
@@ -58,7 +61,7 @@ class AdminController extends Controller
         $model = new $modelClass();
 
         // Get manageable fields
-        $fields = $model->getManageableFields();
+        $fields = $model->getManageableFields('create');
 
         // Pass manageable fields to view
         return view('admin.manageable-models.create', [
@@ -84,7 +87,7 @@ class AdminController extends Controller
         $model = $modelClass::find($id);
 
         // Get manageable fields
-        $fields = $model->getManageableFields();
+        $fields = $model->getManageableFields('edit');
 
         // Pass manageable fields to view
         return view('admin.manageable-models.edit', [
@@ -112,7 +115,7 @@ class AdminController extends Controller
         $request = $model->onCreateHook($request);
 
         // Get manageable fields
-        $fields = $model->getManageableFields();
+        $fields = $model->getManageableFields('create');
 
         // Loop through fields
         foreach ($fields as $field) {
@@ -124,8 +127,8 @@ class AdminController extends Controller
             // Get field name
             $fieldName = $field->name;
 
-            // Check if attribute exists on model table
-            if ($model->getAttribute($fieldName) == null) {
+            // Check if attribute exists on model schema
+            if(\Schema::hasColumn($model->getTable(), $fieldName) == false) {
                 dump('Field '.$fieldName.' does not exist on table '.$model->getTable());
                 continue;
             }
@@ -164,7 +167,7 @@ class AdminController extends Controller
         $request = $model->onEditHook($request);
 
         // Get manageable fields
-        $fields = $model->getManageableFields();
+        $fields = $model->getManageableFields('edit');
 
         // Loop through fields
         foreach ($fields as $field) {
@@ -198,6 +201,35 @@ class AdminController extends Controller
 
 
     // TODO: Add manageable_model_delete
+
+    /**
+     * loginAsUser
+     *
+     * @param  mixed $request
+     * @param  mixed $userid
+     * @return RedirectResponse
+     */
+    public function loginAsUser(Request $request, int $userid)
+    {
+        // Check if master, if not then fail and redirect
+        if (Auth::user()->isMaster() == false) {
+            return redirect()->route('admin.dashboard')->with('error', 'You do not have permission to do this');
+        }
+
+        // Get user
+        $user = User::find($userid);
+
+        // Check if user exists
+        if ($user == null) {
+            return redirect()->route('admin.dashboard')->with('error', 'User does not exist');
+        }
+
+        // Login as user
+        Auth::login($user);
+
+        // Redirect to dashboard
+        return redirect()->route('admin.dashboard')->with('success', 'Logged in as '.$user->name);
+    }
 
     /**
      * getModelFromTable

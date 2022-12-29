@@ -129,7 +129,13 @@
 
         {{-- MAIN --}}
         <main class="container mx-auto mt-4 px-8">
-            <div class="w-full h-8"></div>
+            <div class="w-full h-4"></div>
+            @if(session()->has('success'))
+                <x-admin.alert type="success" :message="session()->get('success')" />
+            @elseif(session()->has('error'))
+                <x-admin.alert type="error" :message="session()->get('error')" />
+            @endif
+            <div class="w-full h-4"></div>
             {{ $slot }}
         </main>
 

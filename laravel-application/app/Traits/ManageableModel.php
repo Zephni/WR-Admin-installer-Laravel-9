@@ -41,6 +41,18 @@ trait ManageableModel
      */
     public function browseActions(): array
     {
+        return $this->defaultBrowseActions();
+    }
+
+    /**
+     * defaultBrowseActions
+     * Should never override this method in the model
+     * Should return an array of actions that can be performed on the model in the browse view
+     * Key is the action name, value is the url
+     * @return array
+     */
+    public function defaultBrowseActions(): array
+    {
         $actions = [];
 
         if($this->isEditable()) {
@@ -110,10 +122,11 @@ trait ManageableModel
 
     /**
      * getManageableFields
-     *
-     * @return array ManageableField[]
+     * Returns an array of fields that can be managed in the create and edit views
+     * @param string $pageType (Can be 'any', 'browse', 'create' or 'edit')
+     * @return array
      */
-    public function getManageableFields(): array
+    public function getManageableFields($pageType = 'any'): array
     {
         return [];
     }

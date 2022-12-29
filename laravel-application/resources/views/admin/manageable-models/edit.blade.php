@@ -4,11 +4,6 @@
 
     <h2 class="text-4xl font-bold">Editing {{ strtolower($model->getHumanName(false)) }} #{{ $model->id }}</h2>
 
-    {{-- If success message --}}
-    @if(session()->has('success'))
-        <x-admin.alert type="success" :message="session()->get('success')" />
-    @endif
-
     <hr class="my-4 h-px bg-gray-500 border-0">
 
     <div class="w-full">
