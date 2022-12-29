@@ -20,6 +20,6 @@ return [
     ],[
         'title' => 'Logout',
         'icon' => 'bi bi-door-closed-fill',
-        'route' => 'admin.logout',
+        'route' => 'logout',
     ],
 ];

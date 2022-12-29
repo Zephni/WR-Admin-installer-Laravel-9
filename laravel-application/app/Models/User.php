@@ -21,22 +21,22 @@ class User extends Authenticatable
     -----------------------------------------------------------*/
     public function isViewable(): bool
     {
-        return Auth::user() && Auth::user()->isMaster();
+        return Auth::user()->isMaster();
     }
 
     public function isCreatable(): bool
     {
-        return Auth::user() && Auth::user()->isMaster();
+        return Auth::user()->isMaster();
     }
 
     public function isEditable(): bool
     {
-        return Auth::user() && Auth::user()->isMaster();
+        return Auth::user()->isMaster();
     }
 
     public function isDeletable(): bool
     {
-        return Auth::user() && Auth::user()->isMaster();
+        return Auth::user()->isMaster();
     }
 
     public function getBrowsableColumns(): array
@@ -87,7 +87,7 @@ class User extends Authenticatable
         return Permissions::fromString($this->permissions);
     }
 
-    public function getPermission(string $attribute): Permissions
+    public function getPermission(string $attribute): mixed
     {
         return $this->getPermissions()->$attribute;
     }

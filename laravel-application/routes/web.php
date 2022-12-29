@@ -39,7 +39,7 @@ Route::controller(App\Http\Controllers\AuthController::class)->group(function ()
 
 /* Admin routes
 ----------------------------------------------------------------*/
-Route::controller(\App\Http\Controllers\AdminController::class)->prefix('manage')->group(function () {
+Route::controller(\App\Http\Controllers\AdminController::class)->prefix('manage')->middleware('is_admin')->group(function () {
     // Dashboard
     Route::get('/', function () { return redirect()->route('admin.dashboard'); });
     Route::view('/dashboard', 'admin.dashboard')->name('admin.dashboard');
@@ -47,9 +47,6 @@ Route::controller(\App\Http\Controllers\AdminController::class)->prefix('manage'
     // Manageable models
     Route::get('/manageable-models/{model}', 'manageable_model_browse')->name('admin.manageable-models.browse');
     Route::get('/manageable-models/{model}/create', 'manageable_model_create')->name('admin.manageable-models.create');
-
-    // Logout
-    Route::get('/logout', 'logout')->name('admin.logout');
 });
 
 /* Temporary routes for testing purposes (will only work if env is local)
@@ -59,7 +56,7 @@ if (env('APP_ENV') === 'local') {
         Route::get('/set-permissions', function () {
             $user = App\Models\User::where('email', 'zephni@hotmail.co.uk')->first();
             $permissions = new App\Classes\Permissions();
-            $permissions->master = false;
+            $permissions->master = true;
             $permissions->admin = true;
             $user->permissions = $permissions->asString();
             $user->save();
