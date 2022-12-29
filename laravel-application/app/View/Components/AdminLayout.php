@@ -30,7 +30,7 @@ class AdminLayout extends Component
 
         $data = [
             'navigation' => config('admin-navigation'),
-            'manageableModels' => $manageableModels,
+            'manageableModels' => $manageableModels
         ];
 
         // dd($data);

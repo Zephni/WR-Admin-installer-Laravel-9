@@ -16,7 +16,7 @@ class AdminController extends Controller
      * @param  mixed $table
      * @return View
      */
-    public function manageable_model_browse(Request $request, string $table): View
+    public function manageableModelBrowse(Request $request, string $table): View
     {
         // Get this model's class
         $modelClass = $this->getModelFromTable($table);
@@ -38,10 +38,60 @@ class AdminController extends Controller
             'model' => $model,
             'columns' => $columns,
             'rows' => $rows,
+            'routePrefix' => $request->route()->getPrefix()
         ]);
     }
 
-    // TODO: Add manageable_model_add
+    /**
+     * manageableModelCreate
+     *
+     * @param  mixed $request
+     * @param  mixed $table
+     * @return View
+     */
+    public function manageableModelCreate(Request $request, string $table): View
+    {
+        // Get this model's class
+        $modelClass = $this->getModelFromTable($table);
+
+        // Get instance of this model
+        $model = new $modelClass();
+
+        // Get manageable fields
+        $fields = $model->getManageableFields();
+
+        // Pass manageable fields to view
+        return view('admin.manageable-models.create', [
+            'model' => $model,
+            'fields' => $fields,
+        ]);
+    }
+
+    /**
+     * manageableModelEdit
+     *
+     * @param  mixed $request
+     * @param  mixed $table
+     * @param  mixed $id
+     * @return View
+     */
+    public function manageableModelEdit(Request $request, string $table, int $id): View
+    {
+        // Get this model's class
+        $modelClass = $this->getModelFromTable($table);
+
+        // Get instance of this model by id
+        $model = $modelClass::find($id);
+
+        // Get manageable fields
+        $fields = $model->getManageableFields();
+
+        // Pass manageable fields to view
+        return view('admin.manageable-models.edit', [
+            'model' => $model,
+            'fields' => $fields
+        ]);
+    }
 
     // TODO: Add manageable_model_edit
 

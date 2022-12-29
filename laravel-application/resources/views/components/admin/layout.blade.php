@@ -128,7 +128,7 @@
         </aside>
 
         {{-- MAIN --}}
-        <main class="container mx-auto mt-4 px-4">
+        <main class="container mx-auto mt-4 px-8">
             <div class="w-full h-8"></div>
             {{ $slot }}
         </main>

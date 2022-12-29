@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use App\Classes\Permissions;
+use \App\Classes\ManageableFields as ManageableFields;
 
 class User extends Authenticatable
 {
@@ -44,6 +45,15 @@ class User extends Authenticatable
         return [
             'name',
             'email'
+        ];
+    }
+
+    public function getManageableFields(): array
+    {
+        return [
+            new ManageableFields\Input('name', $this->name),
+            new ManageableFields\Input('email', $this->email, 'email'),
+            new ManageableFields\Input('permissions', $this->permissions, 'text'),
         ];
     }
 

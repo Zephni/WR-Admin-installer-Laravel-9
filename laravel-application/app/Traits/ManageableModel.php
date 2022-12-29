@@ -37,7 +37,7 @@ trait ManageableModel
         $actions = [];
 
         if($this->isEditable()) {
-            $actions['edit'] = '/url-here';
+            $actions['edit'] = 'manageable-models/'.$this->getTable().'/edit/'.$this->id;
         }
 
         if($this->isDeletable()) {
