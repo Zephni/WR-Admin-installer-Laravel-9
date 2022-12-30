@@ -59,6 +59,15 @@
                 @endforeach
             </tbody>
         </table>
+
+        @if(count($rows) === 0)
+            <div class="w-full mt-10 flex justify-center items-center">
+                <div class="text-1xl font-bold text-gray-500">
+                    No {{ Str::lower($model->getHumanName()) }} found,
+                    <a href="{{ route('admin.manageable-models.create', ['table' => $model->getTable()]) }}" class="text-teal-500 hover:text-teal-400">create new</a>.
+                </div>
+            </div>
+        @endif
     </div>
 
 </x-admin-layout>

@@ -157,7 +157,7 @@ trait ManageableModel
      * @param string $pageType (Can be 'any', 'browse', 'create' or 'edit')
      * @return array
      */
-    public function getManageableFields(ModelPageType $pageType = ModelPageType::Any): array
+    public function getManageableFields(ModelPageType $pageType): array
     {
         return [];
     }

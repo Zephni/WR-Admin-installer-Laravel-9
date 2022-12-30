@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\ModelPageType;
 use App\Traits\ManageableModel;
 use Illuminate\Database\Eloquent\Model;
-use \App\Classes\ManageableFields as ManageableFields;
+use App\Classes\ManageableFields as ManageableFields;
 
 class ApplicationConfig extends Model
 {
@@ -47,7 +48,7 @@ class ApplicationConfig extends Model
         ];
     }
 
-    public function getManageableFields(string $pageType = 'any'): array
+    public function getManageableFields(ModelPageType $pageType): array
     {
         return [
             new ManageableFields\Input('_key', $this->_key),
