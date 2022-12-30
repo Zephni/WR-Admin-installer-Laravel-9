@@ -56,7 +56,7 @@
                                         <a href="{{ route('admin.manageable-models.browse', $manageableModelInstance->getTable()) }}" class="group flex flex-grow items-center p-2 text-base font-normal rounded-lg text-white hover:bg-gray-700">
                                             <i class="bi bi-gear-fill mr-4 text-2xl text-gray-400 group-hover:text-white"></i>
                                             <span class="flex-1 text-left whitespace-nowrap text-white" sidebar-toggle-item>
-                                                @if(true)
+                                                @if(request()->route('table') == $manageableModelInstance->getTable())
                                                     <span class="absolute inset-y-0 -left-1 w-1 bg-blue-500 rounded-tr-sm rounded-br-sm" aria-hidden="true"></span>
                                                 @endif
                                                 {{ $manageableModelInstance->getHumanName() }}
