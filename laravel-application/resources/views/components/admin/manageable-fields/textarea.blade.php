@@ -13,6 +13,6 @@
     <textarea
         id="mf_{{ $name }}"
         name="{{ $name }}"
-        {{ $attributes->merge(['class' => 'w-full border border-gray-500 rounded-md px-2 py-1']) }}
+        {{ $attributes->merge(['class' => 'w-full border border-gray-500 bg-gray-900 text-gray-300 rounded-md px-2 py-2']) }}
     >{{ $value }}</textarea>
 </div>

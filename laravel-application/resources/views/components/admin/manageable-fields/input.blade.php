@@ -17,7 +17,7 @@
         name="{{ $name }}"
         type="{{ $type }}"
         value="{{ $value }}"
-        {{ $attributes->merge(['class' => 'w-full border border-gray-500 rounded-md px-2 py-1']) }}
+        {{ $attributes->merge(['class' => 'w-full border border-gray-500 bg-gray-900 text-gray-300 rounded-md px-2 py-2']) }}
     />
 @if($type != 'hidden'&& $label != null)
 </div>

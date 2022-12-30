@@ -3,4 +3,4 @@
     'name'      => $name ?? 'unset',
 ])
 
-<label for="mf_{{ $name }}" class="block text-gray-700 text-sm font-bold mb-2">{{ $label }}</label>
+<label for="mf_{{ $name }}" class="block text-gray-300 text-sm font-bold mb-2">{{ $label }}</label>

@@ -16,10 +16,10 @@
         {{-- Flowbite --}}
         <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.4/dist/flowbite.min.css" />
     </head>
-    <body class="bg-gray-200 flex h-full">
+    <body class="bg-gray-900 flex h-full">
         {{-- NAVIGATION --}}
-        <aside class="w-96 min-h-screen px-3 bg-gray-800" aria-label="Sidebar">
-            <div class="fixed h-full min-h-screen overflow-y-auto py-4 px-3">
+        <aside class="fixed w-96 min-h-screen px-3 bg-gray-800" aria-label="Sidebar">
+            <div class="h-full min-h-screen overflow-y-auto py-4 px-3">
                 <a href="https://flowbite.com/" class="flex items-center pl-1.5 mb-5">
                     <img src="https://flowbite.com/docs/images/logo.svg" class="mr-3 h-9" alt="Flowbite Logo" />
                     <p class="block w-full text-xl font-semibold whitespace-nowrap text-white">
@@ -128,14 +128,16 @@
         </aside>
 
         {{-- MAIN --}}
-        <main class="container mx-auto mt-4 px-8">
-            @if(session()->has('success'))
-                <x-admin.alert type="success" :message="session()->get('success')" />
-            @elseif(session()->has('error'))
-                <x-admin.alert type="error" :message="session()->get('error')" />
-            @endif
-            <div class="w-full h-4"></div>
-            {{ $slot }}
+        <main class="w-full mx-auto mt-4 px-8 text-white">
+            <div class="pl-96">
+                @if(session()->has('success'))
+                    <x-admin.alert type="success" :message="session()->get('success')" />
+                @elseif(session()->has('error'))
+                    <x-admin.alert type="error" :message="session()->get('error')" />
+                @endif
+                <div class="w-full h-4"></div>
+                {{ $slot }}
+            </div>
         </main>
 
         <script src="https://unpkg.com/flowbite@1.5.4/dist/flowbite.js"></script>
