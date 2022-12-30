@@ -67,7 +67,7 @@ class ManageableField
      */
     public function getLabel(): string
     {
-        return \Str::of($this->name)->replace('_', ' ')->title();
+        return \Str::of($this->name)->replace('_', ' ')->title()->trim();
     }
 
     /**
@@ -79,6 +79,6 @@ class ManageableField
     {
         return !empty($this->options['placeholder'])
             ? $this->options['placeholder']
-            : 'Enter ' . \Str::lower(\Str::title($this->name));
+            : 'Enter ' . \Str::of($this->name)->replace('_', ' ')->lower()->trim();
     }
 }
