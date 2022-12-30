@@ -109,6 +109,16 @@ trait ManageableModel
     }
 
     /**
+     * onDeleteHook
+     * Intercept and modify request when the model is deleted (ran just before model is deleted)
+     * @return Request
+     */
+    public function onDeleteHook(Request $request): Request
+    {
+        return $request;
+    }
+
+    /**
      * getHumanName
      * Gets the human name of the model
      * @return string

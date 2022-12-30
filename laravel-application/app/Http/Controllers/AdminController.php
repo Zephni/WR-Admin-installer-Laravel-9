@@ -233,8 +233,36 @@ class AdminController extends Controller
         return redirect()->route('admin.manageable-models.edit', ['table' => $table, 'id' => $id])->with('success', $model->getHumanName(false).' updated successfully');
     }
 
+    /**
+     * manageableModelDeleteSubmit
+     *
+     * @param  mixed $request
+     * @param  mixed $table
+     * @param  mixed $id
+     * @return View | RedirectResponse
+     */
+    public function manageableModelDeleteSubmit(Request $request, string $table, int $id): View | RedirectResponse
+    {
+        // Get this model's class
+        $modelClass = $this->getModelFromTable($table);
 
-    // TODO: Add manageable_model_delete
+        // Get instance of this model by id
+        $model = $modelClass::find($id);
+
+        // Check permissions and redirect if not allowed
+        if ($model->isDeletable() == false) {
+            return redirect()->route('admin.dashboard')->with('error', 'You do not have permission to delete '.$model->getHumanName());
+        }
+
+        // Run onDeleteHook
+        $request = $model->onDeleteHook($request);
+
+        // Delete model
+        $model->delete();
+
+        // Redirect to browse
+        return redirect()->route('admin.manageable-models.browse', ['table' => $table])->with('success', $model->getHumanName(false).' #'.$id.' deleted successfully');
+    }
 
     /**
      * loginAsUser
