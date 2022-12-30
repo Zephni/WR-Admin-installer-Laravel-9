@@ -76,7 +76,7 @@ trait ManageableModel
                 'confirm' => 'Are you sure you want to delete this?',
                 'type' => 'danger',
                 'text' => 'Delete',
-                'href' => route('admin.manageable-models.edit', [
+                'href' => route('admin.manageable-models.delete', [
                     'table' => $this->getTable(),
                     'id' => $this->id
                 ])

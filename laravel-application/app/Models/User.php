@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Traits\ManageableModel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class User extends Authenticatable
 {
-    use ManageableModel, HasApiTokens, HasFactory, Notifiable;
+    use ManageableModel, SoftDeletes, HasApiTokens, HasFactory, Notifiable;
 
     /* ManageableModel traits
     -----------------------------------------------------------*/
