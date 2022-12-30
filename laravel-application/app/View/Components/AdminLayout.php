@@ -33,9 +33,7 @@ class AdminLayout extends Component
             'manageableModels' => $manageableModels
         ];
 
-        // dd($data);
-
-        return view('components.admin.layout', $data);
+        return view('components.admin.layouts.layout', $data);
     }
 
     /**

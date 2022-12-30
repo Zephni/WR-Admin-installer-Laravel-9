@@ -5,24 +5,24 @@
     <x-frontend.auth-container>
 
         @if(session('status'))
-            <x-alert type="success">{{ session('status') }}</x-alert>
+            <x-frontend.alert type="success">{{ session('status') }}</x-frontend.alert>
         @endif
 
         @foreach($errors->all() as $message)
-            <x-alert>{{ $message }}</x-alert>
+            <x-frontend.alert>{{ $message }}</x-frontend.alert>
         @endforeach
 
         <form action="{{ route('login-post') }}" method="POST">
             @csrf
             <p class="mb-4">Please login to your account</p>
             <div class="mb-4">
-                <x-input-text name="email" placeholder="Email" value="{{ session('email') ?? '' }}"></x-input-text>
+                <x-frontend.input-text name="email" placeholder="Email" value="{{ session('email') ?? '' }}"></x-frontend.input-text>
             </div>
             <div class="mb-4">
-                <x-input-text type="password" name="password" placeholder="Password"></x-input-text>
+                <x-frontend.input-text type="password" name="password" placeholder="Password"></x-frontend.input-text>
             </div>
             <div class="text-center pt-1 mb-12 pb-1">
-                <x-input-submit value="Log in" />
+                <x-frontend.input-submit value="Log in" />
                 <a class="text-gray-500" href="{{ route('password.forgot') }}">Forgot password?</a>
             </div>
             <div class="flex items-center justify-between pb-6">

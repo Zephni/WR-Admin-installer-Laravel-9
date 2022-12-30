@@ -23,6 +23,6 @@ class FrontendLayout extends Component
      */
     public function render()
     {
-        return view('components.frontend.layout');
+        return view('components.frontend.layouts.layout');
     }
 }
