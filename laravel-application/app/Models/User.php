@@ -88,8 +88,9 @@ class User extends Authenticatable
 
     public function onCreateHook(Request $request): Request
     {
+
         return $request->merge([
-            'permissions' => $request->filled('permissions') ?? (new Permissions())->asString(),
+            'permissions' => $request->filled('permissions') ? $request->input('permissions') : (new Permissions())->asString(),
             'password' => Hash::make($request->input('password'))
         ]);
     }
