@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('application_config', function (Blueprint $table) {
             $table->id();
             $table->string('_key')->unique();
-            $table->string('_value');
-            $table->string('_type');
-            $table->string('_description')->nullable();
+            $table->string('_value')->default('');
+            $table->string('_type')->default('');
+            $table->string('_description')->default('');
             $table->timestamps();
         });
     }

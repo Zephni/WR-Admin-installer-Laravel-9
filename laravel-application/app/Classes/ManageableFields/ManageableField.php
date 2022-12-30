@@ -48,6 +48,11 @@ class ManageableField
         return $this;
     }
 
+    public function getLabel(): string
+    {
+        return \Str::of($this->name)->replace('_', ' ')->title();
+    }
+
     public function getPlaceholder(): string
     {
         return $this->options['placeholder'] ?? 'Enter ' . \Str::lower(\Str::title($this->name));

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\ManageableModel;
 use Illuminate\Database\Eloquent\Model;
+use \App\Classes\ManageableFields as ManageableFields;
 
 class ApplicationConfig extends Model
 {
@@ -42,8 +43,16 @@ class ApplicationConfig extends Model
     {
         return [
             '_key',
-            '_value',
-            '_type'
+            '_value'
+        ];
+    }
+
+    public function getManageableFields(string $pageType = 'any'): array
+    {
+        return [
+            new ManageableFields\Input('_key', $this->_key),
+            new ManageableFields\TextArea('_value', $this->_value),
+            new ManageableFields\TextArea('_description', $this->_description),
         ];
     }
 }

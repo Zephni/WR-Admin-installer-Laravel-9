@@ -13,7 +13,7 @@ class Input extends ManageableField
     public function render()
     {
         return view('components.admin.manageable-fields.input', [
-            'label' => \Str::title($this->name),
+            'label' => $this->getLabel(),
             'name' => $this->name,
             'value' => $this->value,
             'type' => $this->type,

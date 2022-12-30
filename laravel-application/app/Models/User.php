@@ -46,7 +46,7 @@ class User extends Authenticatable
     {
         $browseActions = $this->defaultBrowseActions();
         return array_merge($browseActions, [
-            'login as' => 'login-as/'.$this->id
+            'login' => 'login-as/'.$this->id
         ]);
     }
 
@@ -73,7 +73,7 @@ class User extends Authenticatable
         ];
     }
 
-    public function getManageableFields($pageType = 'any'): array
+    public function getManageableFields(string $pageType = 'any'): array
     {
         $manageableFields = [];
         $manageableFields[] = new ManageableFields\Input('name', $this->name);
@@ -82,7 +82,7 @@ class User extends Authenticatable
 
         if($pageType == 'create')
         {
-            $manageableFields[] = (new ManageableFields\Input('password', '', 'password'));
+            $manageableFields[] = new ManageableFields\Input('password', '', 'password');
         }
         if($pageType == 'edit')
         {

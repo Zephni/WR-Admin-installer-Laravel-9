@@ -136,6 +136,11 @@ class AdminController extends Controller
             // Get field value
             $fieldValue = $request->get($fieldName);
 
+            // If field value is null we set to an empty string
+            if ($fieldValue == null) {
+                $fieldValue = '';
+            }
+
             // Set field value
             $model->$fieldName = $fieldValue;
         }
@@ -180,13 +185,18 @@ class AdminController extends Controller
             $fieldName = $field->name;
 
             // Check if attribute exists on model table
-            if ($model->getAttribute($fieldName) == null) {
+            if(\Schema::hasColumn($model->getTable(), $fieldName) == false) {
                 dump('Field '.$fieldName.' does not exist on table '.$model->getTable());
                 continue;
             }
 
             // Get field value
             $fieldValue = $request->get($fieldName);
+
+            // If field value is null we set to an empty string
+            if ($fieldValue == null) {
+                $fieldValue = '';
+            }
 
             // Set field value
             $model->$fieldName = $fieldValue;
