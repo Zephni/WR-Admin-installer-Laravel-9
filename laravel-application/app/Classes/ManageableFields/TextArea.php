@@ -18,7 +18,7 @@ class TextArea extends ManageableField
         return view('components.admin.manageable-fields.textarea', [
             'label' => $this->getLabel(),
             'name' => $this->name,
-            'value' => $this->value,
+            'value' => $this->getValue(),
             'options' => $this->options,
             'attributes' => new ComponentAttributeBag([
                 'placeholder' => $this->getPlaceholder(),

@@ -40,7 +40,7 @@ class ManageableField
 
     /**
      * options
-     *
+     * Appends the given options to the options array
      * @param  mixed $options
      * @return ManageableField
      */
@@ -50,13 +50,35 @@ class ManageableField
         return $this;
     }
 
+    /**
+     * getValue
+     * Return old value if it exists, otherwise return the default value
+     * @return string
+     */
+    public function getValue(): string
+    {
+        return old($this->name) ?? $this->value;
+    }
+
+    /**
+     * getLabel
+     * Prettifies the label by replacing underscores with spaces and capitalizing the first letter of each word
+     * @return string
+     */
     public function getLabel(): string
     {
         return \Str::of($this->name)->replace('_', ' ')->title();
     }
 
+    /**
+     * getPlaceholder
+     * Return the placeholder if it exists, otherwise return a default placeholder
+     * @return string
+     */
     public function getPlaceholder(): string
     {
-        return $this->options['placeholder'] ?? 'Enter ' . \Str::lower(\Str::title($this->name));
+        return !empty($this->options['placeholder'])
+            ? $this->options['placeholder']
+            : 'Enter ' . \Str::lower(\Str::title($this->name));
     }
 }

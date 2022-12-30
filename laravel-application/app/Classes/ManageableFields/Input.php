@@ -15,7 +15,7 @@ class Input extends ManageableField
         return view('components.admin.manageable-fields.input', [
             'label' => $this->getLabel(),
             'name' => $this->name,
-            'value' => $this->value,
+            'value' => $this->getValue(),
             'type' => $this->type,
             'options' => $this->options,
             'attributes' => new ComponentAttributeBag([
