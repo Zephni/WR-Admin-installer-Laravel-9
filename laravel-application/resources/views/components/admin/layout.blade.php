@@ -16,11 +16,17 @@
         {{-- Flowbite --}}
         <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.4/dist/flowbite.min.css" />
     </head>
-    <body class="bg-gray-900 flex h-full">
+    <body class="relative bg-gray-900 flex h-full" x-data="{ navigationOpen: true }">
         {{-- NAVIGATION --}}
-        <aside class="fixed w-96 min-h-screen px-3 bg-gray-800" aria-label="Sidebar">
+        <button title="Expand sidebar" x-show="!navigationOpen" @click="navigationOpen = !navigationOpen" class="absolute top-3 -left-1 bg-gray-800 rounded py-0 pl-2 border border-gray-700">
+            <i class="bi bi-arrow-bar-right text-gray-300"></i>
+        </button>
+        <aside x-show="navigationOpen" x-transition.duration.400ms class="fixed w-96 min-h-screen px-3 bg-gray-800" aria-label="Sidebar">
+            <button title="Collapse sidebar" @click="navigationOpen = !navigationOpen" class="absolute top-3 -right-2 bg-gray-800 rounded px-1 py-1">
+                <i class="bi bi-arrow-bar-left text-gray-300"></i>
+            </button>
             <div class="h-full min-h-screen overflow-y-auto py-4 px-3">
-                <a href="https://flowbite.com/" class="flex items-center pl-1.5 mb-5">
+                <a href="{{ route('admin.dashboard') }}" class="flex items-center pl-1.5 mb-5">
                     <img src="https://flowbite.com/docs/images/logo.svg" class="mr-3 h-9" alt="Flowbite Logo" />
                     <p class="block w-full text-xl font-semibold whitespace-nowrap text-white">
                         {{ env('APP_NAME') }}<br />
@@ -142,7 +148,7 @@
 
         {{-- MAIN --}}
         <main class="w-full mx-auto mt-4 px-8 text-white">
-            <div class="pl-96">
+            <div :class="{'pl-0' : !navigationOpen}" class="pl-96">
                 @if(session()->has('success'))
                     <x-admin.alert type="success" :message="session()->get('success')" />
                 @endif
