@@ -6,7 +6,7 @@
 @php
     $alertID = 'alert-'.strtolower(preg_replace( '/[\W]/', '', strip_tags($slot)));
     $typeClassList = [
-        'error'   => 'text-red-300 bg-red-800',
+        'error'   => 'text-red-200 bg-red-800',
         'success' => 'text-green-300 bg-green-800',
         'info'    => 'text-blue-300 bg-blue-800',
         'warning' => 'text-yellow-300 bg-yellow-600',

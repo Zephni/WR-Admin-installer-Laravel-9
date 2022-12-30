@@ -44,6 +44,22 @@ class User extends Authenticatable
         return Auth::user()->isMaster();
     }
 
+    public function validate(Request $request, ModelPageType $pageType): array
+    {
+        $rules = [
+            'email' => 'required|email|unique:users,email,' . $this->id,
+            'name' => 'required',
+            'permissions' => 'required'
+        ];
+
+        if($pageType == ModelPageType::Create)
+        {
+            $rules['password'] = 'required';
+        }
+
+        return $request->validate($rules);
+    }
+
     public function browseActions(): array
     {
         $browseActions = $this->defaultBrowseActions();

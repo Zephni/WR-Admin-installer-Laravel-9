@@ -6,6 +6,7 @@ use App\Enums\ModelPageType;
 use App\Traits\ManageableModel;
 use Illuminate\Database\Eloquent\Model;
 use App\Classes\ManageableFields as ManageableFields;
+use Symfony\Component\HttpFoundation\Request;
 
 class ApplicationConfig extends Model
 {
@@ -33,6 +34,13 @@ class ApplicationConfig extends Model
     public function isDeletable(): bool
     {
         return true;
+    }
+
+    public function validate(Request $request, ModelPageType $pageType): array
+    {
+        return $request->validate([
+            '_key' => 'required|min:3|unique:application_config,_key,' . $this->id
+        ]);
     }
 
     public function getHumanName(bool $plural = true): string

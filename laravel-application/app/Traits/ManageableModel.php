@@ -35,6 +35,18 @@ trait ManageableModel
     }
 
     /**
+     * validate
+     * Validate is called on both creation and editing of the model
+     * @param  mixed $request
+     * @param  mixed $pageType
+     * @return array
+     */
+    public function validate(Request $request, ModelPageType $pageType): array
+    {
+        return $request->validate([]);
+    }
+
+    /**
      * browseActions
      * Should return an array of actions that can be performed on the model in the browse view
      * Key is the action name, value is the url

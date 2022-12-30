@@ -57,7 +57,7 @@
                                             <i class="bi bi-gear-fill mr-4 text-2xl text-gray-400 group-hover:text-white"></i>
                                             <span class="flex-1 text-left whitespace-nowrap text-white" sidebar-toggle-item>
                                                 @if(request()->route('table') == $manageableModelInstance->getTable())
-                                                    <span class="absolute inset-y-0 -left-1 w-1 bg-blue-500 rounded-tr-sm rounded-br-sm" aria-hidden="true"></span>
+                                                    <span class="absolute inset-y-0 -left-1 w-1 bg-teal-500 rounded-tr-sm rounded-br-sm" aria-hidden="true"></span>
                                                 @endif
                                                 {{ $manageableModelInstance->getHumanName() }}
                                             </span>
@@ -88,7 +88,7 @@
                                     @endif
                                     <span>
                                         @if(request()->route()->getName() == $navigationItem['route'])
-                                            <span class="absolute inset-y-0 -left-1 w-1 bg-blue-500 rounded-tr-sm rounded-br-sm" aria-hidden="true"></span>
+                                            <span class="absolute inset-y-0 -left-1 w-1 bg-teal-500 rounded-tr-sm rounded-br-sm" aria-hidden="true"></span>
                                         @endif
                                         {!! $navigationItem['title'] !!}
                                     </span>
@@ -104,7 +104,7 @@
                                         @endif
                                         <span class="flex-1 text-left whitespace-nowrap text-white" sidebar-toggle-item>
                                             @if(request()->route()->getName() == $navigationItem['route'])
-                                                <span class="absolute inset-y-0 -left-1 w-1 bg-blue-500 rounded-tr-sm rounded-br-sm" aria-hidden="true"></span>
+                                                <span class="absolute inset-y-0 -left-1 w-1 bg-teal-500 rounded-tr-sm rounded-br-sm" aria-hidden="true"></span>
                                             @endif
                                             {!! $navigationItem['title'] !!}
                                         </span>
@@ -132,8 +132,11 @@
             <div class="pl-96">
                 @if(session()->has('success'))
                     <x-admin.alert type="success" :message="session()->get('success')" />
-                @elseif(session()->has('error'))
-                    <x-admin.alert type="error" :message="session()->get('error')" />
+                @endif
+                @if($errors->any())
+                    @foreach($errors->all() as $error)
+                        <x-admin.alert type="error" :message="$error" />
+                    @endforeach
                 @endif
                 <div class="w-full h-4"></div>
                 {{ $slot }}

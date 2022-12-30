@@ -134,6 +134,9 @@ class AdminController extends Controller
         // Run onCreateHook
         $request = $model->onCreateHook($request);
 
+        // Run model validation
+        $model->validate($request, ModelPageType::Create);
+
         // Get manageable fields
         $fields = $model->getManageableFields('create');
 
@@ -196,8 +199,11 @@ class AdminController extends Controller
         // Run onEditHook
         $request = $model->onEditHook($request);
 
+        // Run model validation
+        $model->validate($request, ModelPageType::Edit);
+
         // Get manageable fields
-        $fields = $model->getManageableFields('edit');
+        $fields = $model->getManageableFields(ModelPageType::Edit);
 
         // Loop through fields
         foreach ($fields as $field) {
