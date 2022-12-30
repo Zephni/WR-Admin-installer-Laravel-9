@@ -28,7 +28,18 @@ class Permissions
      */
     public function asString(): string
     {
-        return serialize($this);
+        // Get object vars
+        $vars = get_object_vars($this);
+
+        // Create an array of the vars and their values
+        $array = [];
+        foreach($vars as $key => $value)
+        {
+            $array[$key] = $value;
+        }
+
+        // Return as JSON
+        return json_encode($array);
     }
 
     /**
@@ -39,6 +50,19 @@ class Permissions
      */
     public static function fromString(string $string): Permissions
     {
-        return unserialize($string);
+        // Decode JSON
+        $array = json_decode($string, true);
+
+        // Create a new permissions object
+        $permissions = new Permissions();
+
+        // Set the object vars
+        foreach($array as $key => $value)
+        {
+            $permissions->$key = $value;
+        }
+
+        // Return the permissions object
+        return $permissions;
     }
 }

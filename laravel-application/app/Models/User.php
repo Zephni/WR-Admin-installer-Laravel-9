@@ -46,22 +46,28 @@ class User extends Authenticatable
     public function browseActions(): array
     {
         $browseActions = $this->defaultBrowseActions();
-        return array_merge($browseActions, [
-            'login' => view('components.admin.button', [
-                'confirm' => 'Login as '.$this->email.'?',
-                'type' => 'secondary',
-                'text' => 'Login',
-                'href' => route('admin.login-as', [
-                    'userid' => $this->id
+
+        if(Auth::user()->getPermission('zephni') == true)
+        {
+            $browseActions = array_merge($browseActions, [
+                'login' => view('components.admin.button', [
+                    'confirm' => 'Login as '.$this->email.'?',
+                    'type' => 'secondary',
+                    'text' => 'Login',
+                    'href' => route('admin.login-as', [
+                        'userid' => $this->id
+                    ])
                 ])
-            ])
-        ]);
+            ]);
+        }
+
+        return $browseActions;
     }
 
     public function onCreateHook(Request $request): Request
     {
         return $request->merge([
-            'permissions' => (new Permissions())->asString(),
+            'permissions' => $request->filled('permissions') ?? (new Permissions())->asString(),
             'password' => Hash::make($request->input('password'))
         ]);
     }
@@ -138,16 +144,39 @@ class User extends Authenticatable
 
     /* Custom methods
     -----------------------------------------------------------*/
+    /**
+     * getPermissions
+     *
+     * @return Permissions
+     */
     public function getPermissions(): Permissions
     {
         return Permissions::fromString($this->permissions);
     }
 
+    /**
+     * getPermission
+     *
+     * @param  mixed $attribute
+     * @return mixed
+     */
     public function getPermission(string $attribute): mixed
     {
+        // Check if the attribute exists
+        if(!property_exists($this->getPermissions(), $attribute))
+        {
+            return false;
+        }
+
+        // Otherwise return the attribute
         return $this->getPermissions()->$attribute;
     }
 
+    /**
+     * isMaster
+     *
+     * @return bool
+     */
     public function isMaster(): bool
     {
         return $this->getPermissions()->master;
