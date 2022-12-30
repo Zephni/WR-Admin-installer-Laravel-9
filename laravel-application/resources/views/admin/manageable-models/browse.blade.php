@@ -23,7 +23,9 @@
                     @foreach($columns as $column)
                         <th class="px-2 py-2 w-auto">{{ Str::of($column)->replace('_', ' ')->title() }}</th>
                     @endforeach
-                    @foreach($model->browseActions() as $action)
+                    @php $browseKeys = []; @endphp
+                    @foreach($model->browseActions() as $key => $action)
+                        @php $browseKeys[] = $key; @endphp
                         <th class="px-2 py-2 w-16"></th>
                     @endforeach
                 </tr>
@@ -46,13 +48,19 @@
                             @endphp
                             <td class="px-2 py-3">{{ $value }}</td>
                         @endforeach
-                        @foreach($row->browseActions() as $actionKey => $actionValue)
+                        @php
+                            $rowBrowseActions = $row->browseActions();
+                            $rowBrowseActions = array_merge(array_fill_keys($browseKeys, false), $rowBrowseActions);
+                        @endphp
+                        @foreach($rowBrowseActions as $key => $action)
                             <td class="px-2 py-2">
-                                <x-admin.button
-                                    href="{{ $actionValue['href'] ?? '#' }}"
-                                    text="{{ $actionValue['text'] ?? 'Button' }}"
-                                    type="{{ $actionValue['type'] ?? 'primary' }}"
-                                    confirm="{{ $actionValue['confirm'] ?? '0' }}" />
+                                @if($action != false)
+                                    <x-admin.button
+                                        href="{{ $action['href'] ?? '#' }}"
+                                        text="{{ $action['text'] ?? 'Button' }}"
+                                        type="{{ $action['type'] ?? 'primary' }}"
+                                        confirm="{{ $action['confirm'] ?? '0' }}" />
+                                @endif
                             </td>
                         @endforeach
                     </tr>

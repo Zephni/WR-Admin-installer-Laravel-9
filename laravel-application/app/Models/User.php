@@ -41,6 +41,11 @@ class User extends Authenticatable
 
     public function isDeletable(): bool
     {
+        if($this->id == Auth::user()->id)
+        {
+            return false;
+        }
+
         return Auth::user()->isMaster();
     }
 
