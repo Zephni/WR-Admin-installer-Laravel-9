@@ -52,26 +52,36 @@
                                     @continue
                                 @endif
                                 <li class="relative">
-                                    <div class="flex justify-between">
-                                        <a href="{{ route('admin.manageable-models.browse', $manageableModelInstance->getTable()) }}" class="group flex flex-grow items-center p-2 text-base font-normal rounded-lg text-white hover:bg-gray-700">
+                                    <div class="flex justify-between relative">
+                                        <a title="{{ $manageableModelInstance->getHumanName() }}" href="{{ route('admin.manageable-models.browse', $manageableModelInstance->getTable()) }}" class="group flex flex-grow items-center p-2 text-base font-normal rounded-lg text-white hover:bg-gray-700 @if(request()->route('table') == $manageableModelInstance->getTable()) bg-slate-700 @endif">
                                             <i class="bi bi-gear-fill mr-4 text-2xl text-gray-400 group-hover:text-white"></i>
                                             <span class="flex-1 text-left whitespace-nowrap text-white" sidebar-toggle-item>
-                                                @if(request()->route('table') == $manageableModelInstance->getTable())
-                                                    <span class="absolute inset-y-0 -left-1 w-1 bg-teal-500 rounded-tr-sm rounded-br-sm" aria-hidden="true"></span>
-                                                @endif
                                                 {{ $manageableModelInstance->getHumanName() }}
                                             </span>
                                         </a>
-                                        <button type="button" class="flex items-center flex-shrink p-2 text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700" aria-controls="nav-dropdown-{{ $parentIndex }}" data-collapse-toggle="nav-dropdown-{{ $parentIndex }}">
+                                        @if(request()->route('table') == $manageableModelInstance->getTable())
+                                            <span class="absolute inset-y-0 -left-1 w-1 bg-teal-500 rounded-tr-sm rounded-br-sm" aria-hidden="true"></span>
+                                        @endif
+                                        <button title="Dropdown" type="button" class="flex items-center flex-shrink p-2 text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700" aria-controls="nav-dropdown-{{ $parentIndex }}" data-collapse-toggle="nav-dropdown-{{ $parentIndex }}">
                                             <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                         </button>
                                     </div>
                                     <ul id="nav-dropdown-{{ $parentIndex }}" class="hidden py-2 space-y-2">
-                                        @if($manageableModelInstance->isCreatable())
-                                            <li><a href="{{ route('admin.manageable-models.create', $manageableModelInstance->getTable()) }}" class="flex items-center p-2 pl-11 w-full text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700">Create</a></li>
-                                        @endif
                                         @if($manageableModelInstance->isViewable())
-                                            <li><a href="{{ route('admin.manageable-models.browse', $manageableModelInstance->getTable()) }}" class="flex items-center p-2 pl-11 w-full text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700">Browse</a></li>
+                                            <li class="relative ml-8">
+                                                <a href="{{ route('admin.manageable-models.browse', $manageableModelInstance->getTable()) }}" class="flex items-center p-2 w-full text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700 pl-3 @if(request()->route()->getName() == 'admin.manageable-models.browse' && request()->route('table') == $manageableModelInstance->getTable()) bg-slate-700 @endif">Browse</a>
+                                                @if(request()->route()->getName() == 'admin.manageable-models.browse' && request()->route('table') == $manageableModelInstance->getTable())
+                                                    <span class="absolute inset-y-0 -left-1 w-1 bg-teal-700 rounded-tr-sm rounded-br-sm" aria-hidden="true"></span>
+                                                @endif
+                                            </li>
+                                        @endif
+                                        @if($manageableModelInstance->isCreatable())
+                                            <li class="relative ml-8">
+                                                <a href="{{ route('admin.manageable-models.create', $manageableModelInstance->getTable()) }}" class="flex items-center p-2 w-full text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700 pl-3 @if(request()->route()->getName() == 'admin.manageable-models.create' && request()->route('table') == $manageableModelInstance->getTable()) bg-slate-700 @endif">Create</a>
+                                                @if(request()->route()->getName() == 'admin.manageable-models.create' && request()->route('table') == $manageableModelInstance->getTable())
+                                                    <span class="absolute inset-y-0 -left-1 w-1 bg-teal-700 rounded-tr-sm rounded-br-sm" aria-hidden="true"></span>
+                                                @endif
+                                            </li>
                                         @endif
                                     </ul>
                                 </li>
@@ -82,41 +92,44 @@
                         {{-- If nav item does not have children --}}
                         @elseif(!isset($navigationItem['children']))
                             <li class="relative">
-                                <a href="{{ route($navigationItem['route']) }}" class="group flex items-center p-2 text-base font-normal rounded-lg text-white hover:bg-gray-700 @if(request()->route()->getName() == $navigationItem['route']) bg-slate-700 @endif">
+                                <a title="{{ strip_tags($navigationItem['title']) }}" href="{{ route($navigationItem['route']) }}" class="group flex items-center p-2 text-base font-normal rounded-lg text-white hover:bg-gray-700 @if(request()->route()->getName() == $navigationItem['route']) bg-slate-700 @endif">
                                     @if(isset($navigationItem['icon']))
                                         <i class="{{ $navigationItem['icon'] }} mr-4 text-2xl text-gray-400 group-hover:text-white"></i>
                                     @endif
                                     <span>
-                                        @if(request()->route()->getName() == $navigationItem['route'])
-                                            <span class="absolute inset-y-0 -left-1 w-1 bg-teal-500 rounded-tr-sm rounded-br-sm" aria-hidden="true"></span>
-                                        @endif
                                         {!! $navigationItem['title'] !!}
                                     </span>
                                 </a>
+                                @if(request()->route()->getName() == $navigationItem['route'])
+                                    <span class="absolute inset-y-0 -left-1 w-1 bg-teal-500 rounded-tr-sm rounded-br-sm" aria-hidden="true"></span>
+                                @endif
                             </li>
                         {{-- If nav item has children --}}
                         @elseif(isset($navigationItem['children']))
                             <li class="relative">
-                                <div class="flex justify-between">
-                                    <a href="{{ route($navigationItem['route']) }}" class="group flex flex-grow items-center p-2 text-base font-normal rounded-lg text-white hover:bg-gray-700">
+                                <div class="relative flex justify-between">
+                                    <a title="{{ $navigationItem['title'] }}" href="{{ route($navigationItem['route']) }}" class="group flex flex-grow items-center p-2 text-base font-normal rounded-lg text-white hover:bg-gray-700">
                                         @if(isset($navigationItem['icon']))
                                             <i class="{{ $navigationItem['icon'] }} mr-4 text-2xl text-gray-400 group-hover:text-white"></i>
                                         @endif
                                         <span class="flex-1 text-left whitespace-nowrap text-white" sidebar-toggle-item>
-                                            @if(request()->route()->getName() == $navigationItem['route'])
-                                                <span class="absolute inset-y-0 -left-1 w-1 bg-teal-500 rounded-tr-sm rounded-br-sm" aria-hidden="true"></span>
-                                            @endif
                                             {!! $navigationItem['title'] !!}
                                         </span>
                                     </a>
-                                    <button type="button" class="flex items-center flex-shrink p-2 text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700" aria-controls="nav-dropdown-children-{{ $parentIndex }}" data-collapse-toggle="nav-dropdown-{{ $parentIndex }}">
+                                    <button title="Dropdown" type="button" class="flex items-center flex-shrink p-2 text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700" aria-controls="nav-dropdown-children-{{ $parentIndex }}" data-collapse-toggle="nav-dropdown-{{ $parentIndex }}">
                                         <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                     </button>
+                                    @if(request()->route()->getName() == $navigationItem['route'])
+                                        <span class="absolute inset-y-0 -left-1 w-1 bg-teal-500 rounded-tr-sm rounded-br-sm" aria-hidden="true"></span>
+                                    @endif
                                 </div>
                                 <ul id="nav-dropdown-{{ $parentIndex }}" class="hidden py-2 space-y-2">
                                     @foreach($navigationItem['children'] as $child)
-                                        <li>
-                                            <a href="{{ route($child['route']) }}" class="flex items-center p-2 pl-11 w-full text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700">{{ $child['title'] }}</a>
+                                        <li class="relative ml-8">
+                                            <a title="{{ $children['title'] }}" href="{{ route($child['route']) }}" class="flex items-center p-2 w-full text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700 pl-3">{{ $child['title'] }}</a>
+                                            @if(request()->route()->getName() == $navigationItem['route'])
+                                                <span class="absolute inset-y-0 -left-1 w-1 bg-teal-700 rounded-tr-sm rounded-br-sm" aria-hidden="true"></span>
+                                            @endif
                                         </li>
                                     @endforeach
                                 </ul>
