@@ -5,3 +5,12 @@
 @tailwind utilities;
 
 .bg-fancy {background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);}
+
+/* Fix for auto complete forcing white background on input fields */
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+    transition: background-color 600000s 0s, color 600000s 0s;
+}
+input[data-autocompleted] {
+    background-color: transparent !important;
+}
