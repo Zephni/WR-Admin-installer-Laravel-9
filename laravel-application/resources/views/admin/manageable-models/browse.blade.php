@@ -4,10 +4,17 @@
 
     <div class="relative text-4xl font-bold text-gray-300">
         {{ $model->getHumanName(true) }}
-        <a href="{{ route('admin.manageable-models.create', ['table' => $model->getTable()]) }}" class="absolute right-0 bg-teal-700 hover:bg-teal-600 active:bg-teal-600 text-white font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Create new</a>
     </div>
 
     <hr class="my-4 h-px bg-gray-500 border-0">
+
+    <div class="w-full mb-6 flex justify-between">
+        <span>Total {{ Str::lower($model->getHumanName()) }}: <b>{{ count($rows) }}</b></span>
+        <x-admin.button
+            href="{{ route('admin.manageable-models.create', ['table' => $model->getTable()]) }}"
+            text="Create new"
+            type="primary" />
+    </div>
 
     <div class="overflow-x-auto relative">
         <table class="w-full text-sm text-left text-gray-200">

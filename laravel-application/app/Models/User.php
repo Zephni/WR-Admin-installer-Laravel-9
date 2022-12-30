@@ -46,7 +46,14 @@ class User extends Authenticatable
     {
         $browseActions = $this->defaultBrowseActions();
         return array_merge($browseActions, [
-            'login' => 'login-as/'.$this->id
+            'login' => view('components.admin.button', [
+                'confirm' => 'Login as '.$this->email.'?',
+                'type' => 'secondary',
+                'text' => 'Login',
+                'href' => route('admin.login-as', [
+                    'userid' => $this->id
+                ])
+            ])
         ]);
     }
 
