@@ -23,6 +23,7 @@ class TextArea extends ManageableField
             'attributes' => new ComponentAttributeBag([
                 'placeholder' => $this->getPlaceholder(),
                 'rows' => $this->options['rows'],
+                ($this->options['readonly'] == 'true' ? 'readonly' : '') => ''
             ])
         ]);
     }

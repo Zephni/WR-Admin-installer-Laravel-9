@@ -8,6 +8,7 @@ class ManageableField
     public string $type;
     public string $value;
     public array $options = [
+        'readonly' => false,
         'placeholder' => '',
     ];
 

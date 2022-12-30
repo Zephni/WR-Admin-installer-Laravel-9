@@ -90,15 +90,15 @@ class User extends Authenticatable
     public function getManageableFields(string $pageType = 'any'): array
     {
         $manageableFields = [];
+        $manageableFields[] = (new ManageableFields\Input('email', $this->email, 'email'))->options(['readonly' => !Auth::user()->getPermission('zephni')]);
         $manageableFields[] = new ManageableFields\Input('name', $this->name);
-        $manageableFields[] = new ManageableFields\Input('email', $this->email, 'email');
         $manageableFields[] = new ManageableFields\Input('permissions', $this->permissions);
 
         if($pageType == 'create')
         {
             $manageableFields[] = new ManageableFields\Input('password', '', 'password');
         }
-        if($pageType == 'edit')
+        else if($pageType == 'edit')
         {
             $manageableFields[] = (new ManageableFields\Input('password', '', 'password'))->options(['placeholder' => 'Leave empty to keep current password']);
             $manageableFields[] = '<p class="py-3">Hashed password: ' . $this->password . '</p>';

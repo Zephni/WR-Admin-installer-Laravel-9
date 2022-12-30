@@ -63,6 +63,7 @@ if (env('APP_ENV') === 'local') {
         Route::get('/set-permissions', function () {
             $user = App\Models\User::where('email', 'zephni@hotmail.co.uk')->first();
             $permissions = new App\Classes\Permissions();
+            $permissions->zephni = true;
             $permissions->master = true;
             $permissions->admin = true;
             $user->permissions = $permissions->asString();
