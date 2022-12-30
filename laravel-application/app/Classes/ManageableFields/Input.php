@@ -17,6 +17,7 @@ class Input extends ManageableField
             'name' => $this->name,
             'value' => $this->value,
             'type' => $this->type,
+            'options' => $this->options,
             'attributes' => new ComponentAttributeBag([
                 'placeholder' => $this->getPlaceholder(),
                 ($this->options['readonly'] == 'true' ? 'readonly' : '') => ''

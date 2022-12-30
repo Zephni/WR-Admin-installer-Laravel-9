@@ -10,6 +10,7 @@ class ManageableField
     public array $options = [
         'readonly' => false,
         'placeholder' => '',
+        'info' => false,
     ];
 
     /**
