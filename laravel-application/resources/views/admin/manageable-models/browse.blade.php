@@ -41,7 +41,11 @@
                         @endforeach
                         @foreach($row->browseActions() as $actionKey => $actionValue)
                             <td class="px-2 py-2">
-                                <a href="{{ $routePrefix }}/{{ $actionValue }}" class="bg-teal-700 hover:bg-teal-600 active:bg-teal-600 text-white font-bold uppercase text-xs px-4 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">{{ $actionKey }}</a>
+                                <x-admin.button
+                                    href="{{ $actionValue['href'] ?? '#' }}"
+                                    text="{{ $actionValue['text'] ?? 'Button' }}"
+                                    type="{{ $actionValue['type'] ?? 'primary' }}"
+                                    confirm="{{ $actionValue['confirm'] ?? '0' }}" />
                             </td>
                         @endforeach
                     </tr>

@@ -45,8 +45,7 @@ class AdminController extends Controller
         return view('admin.manageable-models.browse', [
             'model' => $model,
             'columns' => $columns,
-            'rows' => $rows,
-            'routePrefix' => $request->route()->getPrefix()
+            'rows' => $rows
         ]);
     }
 

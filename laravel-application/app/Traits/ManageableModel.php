@@ -55,12 +55,32 @@ trait ManageableModel
     {
         $actions = [];
 
+        if($this->id == null)
+        {
+            $this->id = 0;
+        }
+
         if($this->isEditable()) {
-            $actions['edit'] = 'manageable-models/'.$this->getTable().'/edit/'.$this->id;
+            $actions['edit'] = view('components.admin.button', [
+                'type' => 'primary',
+                'text' => 'Edit',
+                'href' => route('admin.manageable-models.edit', [
+                    'table' => $this->getTable(),
+                    'id' => $this->id
+                ])
+            ]);
         }
 
         if($this->isDeletable()) {
-            $actions['delete'] = '/url-here';
+            $actions['delete'] = view('components.admin.button', [
+                'confirm' => 'Are you sure you want to delete this?',
+                'type' => 'danger',
+                'text' => 'Delete',
+                'href' => route('admin.manageable-models.edit', [
+                    'table' => $this->getTable(),
+                    'id' => $this->id
+                ])
+            ]);
         }
 
         return $actions;
