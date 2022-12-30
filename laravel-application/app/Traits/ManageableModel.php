@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Str;
 use Symfony\Component\HttpFoundation\Request;
+use \App\Enums\ModelPageType;
 
 /**
  * ManageableModel
@@ -156,7 +157,7 @@ trait ManageableModel
      * @param string $pageType (Can be 'any', 'browse', 'create' or 'edit')
      * @return array
      */
-    public function getManageableFields(string $pageType = 'any'): array
+    public function getManageableFields(ModelPageType $pageType = ModelPageType::Any): array
     {
         return [];
     }

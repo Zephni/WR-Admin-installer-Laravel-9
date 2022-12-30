@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Contracts\View\View;
+use \App\Enums\ModelPageType;
 
 class AdminController extends Controller
 {
@@ -70,7 +71,7 @@ class AdminController extends Controller
         }
 
         // Get manageable fields
-        $fields = $model->getManageableFields('create');
+        $fields = $model->getManageableFields(ModelPageType::Create);
 
         // Pass manageable fields to view
         return view('admin.manageable-models.create', [
@@ -101,7 +102,7 @@ class AdminController extends Controller
         }
 
         // Get manageable fields
-        $fields = $model->getManageableFields('edit');
+        $fields = $model->getManageableFields(ModelPageType::Edit);
 
         // Pass manageable fields to view
         return view('admin.manageable-models.edit', [
