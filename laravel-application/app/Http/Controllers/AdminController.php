@@ -132,11 +132,11 @@ class AdminController extends Controller
             return redirect()->route('admin.dashboard')->with('error', 'You do not have permission to create '.$model->getHumanName());
         }
 
-        // Run onCreateHook
-        $request = $model->onCreateHook($request);
-
         // Run model validation
         $model->validate($request, ModelPageType::Create);
+
+        // Run onCreateHook
+        $request = $model->onCreateHook($request);
 
         // Get manageable fields
         $fields = $model->getManageableFields(ModelPageType::Create);
@@ -172,11 +172,11 @@ class AdminController extends Controller
             return redirect()->route('admin.dashboard')->with('error', 'You do not have permission to edit '.$model->getHumanName());
         }
 
-        // Run onEditHook
-        $request = $model->onEditHook($request);
-
         // Run model validation
         $model->validate($request, ModelPageType::Edit);
+
+        // Run onEditHook
+        $request = $model->onEditHook($request);
 
         // Get manageable fields
         $fields = $model->getManageableFields(ModelPageType::Edit);

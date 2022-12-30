@@ -54,12 +54,12 @@ class User extends Authenticatable
         $rules = [
             'email' => 'required|email|unique:users,email,' . $this->id,
             'name' => 'required',
-            'permissions' => 'required'
+            'permissions' => 'required|json'
         ];
 
-        if($pageType == ModelPageType::Create)
+        if($pageType == ModelPageType::Create || $request->filled('password'))
         {
-            $rules['password'] = 'required';
+            $rules['password'] = 'required|min:7';
         }
 
         return $request->validate($rules);

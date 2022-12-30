@@ -101,7 +101,7 @@ trait ManageableModel
 
     /**
      * onCreateHook
-     * Intercept and modify request when the model is created (ran just before model values are updated)
+     * Intercept and modify request when the model is created (ran after validation but just before model values are updated)
      * Should use $request->merge() to add or replace values to the request
      * @return Request
      */
@@ -112,7 +112,7 @@ trait ManageableModel
 
     /**
      * onEditHook
-     * Intercept and modify request when the model is edited (ran just before model values are updated)
+     * Intercept and modify request when the model is edited (ran after validation but just before model values are updated)
      * Should use $request->merge() to add or replace values to the request
      * @return Request
      */
