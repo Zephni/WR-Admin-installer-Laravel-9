@@ -17,15 +17,20 @@ class AdminController extends Controller
      *
      * @param  mixed $request
      * @param  mixed $table
-     * @return View
+     * @return View | RedirectResponse
      */
-    public function manageableModelBrowse(Request $request, string $table): View
+    public function manageableModelBrowse(Request $request, string $table): View | RedirectResponse
     {
         // Get this model's class
         $modelClass = $this->getModelFromTable($table);
 
         // Get instance of this model
         $model = new $modelClass();
+
+        // Check permissions and redirect if not allowed
+        if ($model->isViewable() == false) {
+            return redirect()->route('admin.dashboard')->with('error', 'You do not have permission to view '.$model->getHumanName());
+        }
 
         // Get browseable columns
         $columns = $model->getBrowsableColumns();
@@ -50,15 +55,20 @@ class AdminController extends Controller
      *
      * @param  mixed $request
      * @param  mixed $table
-     * @return View
+     * @return View | RedirectResponse
      */
-    public function manageableModelCreate(Request $request, string $table): View
+    public function manageableModelCreate(Request $request, string $table): View | RedirectResponse
     {
         // Get this model's class
         $modelClass = $this->getModelFromTable($table);
 
         // Get instance of this model
         $model = new $modelClass();
+
+        // Check permissions and redirect if not allowed
+        if ($model->isCreatable() == false) {
+            return redirect()->route('admin.dashboard')->with('error', 'You do not have permission to create '.$model->getHumanName());
+        }
 
         // Get manageable fields
         $fields = $model->getManageableFields('create');
@@ -76,15 +86,20 @@ class AdminController extends Controller
      * @param  mixed $request
      * @param  mixed $table
      * @param  mixed $id
-     * @return View
+     * @return View | RedirectResponse
      */
-    public function manageableModelEdit(Request $request, string $table, int $id): View
+    public function manageableModelEdit(Request $request, string $table, int $id): View | RedirectResponse
     {
         // Get this model's class
         $modelClass = $this->getModelFromTable($table);
 
         // Get instance of this model by id
         $model = $modelClass::find($id);
+
+        // Check permissions and redirect if not allowed
+        if ($model->isEditable() == false) {
+            return redirect()->route('admin.dashboard')->with('error', 'You do not have permission to edit '.$model->getHumanName());
+        }
 
         // Get manageable fields
         $fields = $model->getManageableFields('edit');
@@ -101,15 +116,20 @@ class AdminController extends Controller
      *
      * @param  mixed $request
      * @param  mixed $table
-     * @return \Illuminate\Http\RedirectResponse
+     * @return View | RedirectResponse
      */
-    public function manageableModelCreateSubmit(Request $request, string $table)
+    public function manageableModelCreateSubmit(Request $request, string $table): View | RedirectResponse
     {
         // Get this model's class
         $modelClass = $this->getModelFromTable($table);
 
         // Get instance of this model
         $model = new $modelClass();
+
+        // Check permissions and redirect if not allowed
+        if ($model->isCreatable() == false) {
+            return redirect()->route('admin.dashboard')->with('error', 'You do not have permission to create '.$model->getHumanName());
+        }
 
         // Run onCreateHook
         $request = $model->onCreateHook($request);
@@ -158,15 +178,20 @@ class AdminController extends Controller
      * @param  mixed $request
      * @param  mixed $table
      * @param  mixed $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return View | RedirectResponse
      */
-    public function manageableModelEditSubmit(Request $request, string $table, int $id)
+    public function manageableModelEditSubmit(Request $request, string $table, int $id): View | RedirectResponse
     {
         // Get this model's class
         $modelClass = $this->getModelFromTable($table);
 
         // Get instance of this model by id
         $model = $modelClass::find($id);
+
+        // Check permissions and redirect if not allowed
+        if ($model->isEditable() == false) {
+            return redirect()->route('admin.dashboard')->with('error', 'You do not have permission to edit '.$model->getHumanName());
+        }
 
         // Run onEditHook
         $request = $model->onEditHook($request);
