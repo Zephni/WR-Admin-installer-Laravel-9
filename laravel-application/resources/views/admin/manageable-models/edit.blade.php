@@ -2,7 +2,7 @@
 
     <x-slot name="title">Editing {{ strtolower($model->getHumanName(false)) }} #{{ $model->id }}</x-slot>
 
-    <h2 class="text-4xl font-bold text-gray-300">Editing {{ strtolower($model->getHumanName(false)) }} #{{ $model->id }}</h2>
+    <h2 class="text-3xl font-bold text-gray-300">Editing {{ strtolower($model->getHumanName(false)) }} #{{ $model->id }}</h2>
 
     <hr class="my-4 h-px bg-gray-500 border-0">
 

@@ -2,7 +2,7 @@
 
     <x-slot name="title">Creating new {{ strtolower($model->getHumanName(false)) }}</x-slot>
 
-    <h2 class="text-4xl font-bold text-gray-300">Creating new {{ strtolower($model->getHumanName(false)) }}</h2>
+    <h2 class="text-3xl font-bold text-gray-300">Creating new {{ strtolower($model->getHumanName(false)) }}</h2>
 
     <hr class="my-4 h-px bg-gray-500 border-0">
 

@@ -2,7 +2,7 @@
 
     <x-slot name="title">{{ $model->getHumanName(true) }}</x-slot>
 
-    <div class="relative text-4xl font-bold text-gray-300">
+    <div class="relative text-3xl font-bold text-gray-300">
         {{ $model->getHumanName(true) }}
     </div>
 

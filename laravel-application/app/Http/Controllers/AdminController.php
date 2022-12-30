@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Str;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -138,35 +139,10 @@ class AdminController extends Controller
         $model->validate($request, ModelPageType::Create);
 
         // Get manageable fields
-        $fields = $model->getManageableFields('create');
+        $fields = $model->getManageableFields(ModelPageType::Create);
 
-        // Loop through fields
-        foreach ($fields as $field) {
-            // Check if field is manageable field object
-            if (!($field instanceof \App\Classes\ManageableFields\ManageableField)) {
-                continue;
-            }
-
-            // Get field name
-            $fieldName = $field->name;
-
-            // Check if attribute exists on model schema
-            if(\Schema::hasColumn($model->getTable(), $fieldName) == false) {
-                dump('Field '.$fieldName.' does not exist on table '.$model->getTable());
-                continue;
-            }
-
-            // Get field value
-            $fieldValue = $request->get($fieldName);
-
-            // If field value is null we set to an empty string
-            if ($fieldValue == null) {
-                $fieldValue = '';
-            }
-
-            // Set field value
-            $model->$fieldName = $fieldValue;
-        }
+        // Loop through and update fields
+        $this->updateModelFieldsFromRequest($model, $fields, $request);
 
         // Save model
         $model->save();
@@ -205,33 +181,8 @@ class AdminController extends Controller
         // Get manageable fields
         $fields = $model->getManageableFields(ModelPageType::Edit);
 
-        // Loop through fields
-        foreach ($fields as $field) {
-            // Check if field is manageable field object
-            if (!($field instanceof \App\Classes\ManageableFields\ManageableField)) {
-                continue;
-            }
-
-            // Get field name
-            $fieldName = $field->name;
-
-            // Check if attribute exists on model table
-            if(\Schema::hasColumn($model->getTable(), $fieldName) == false) {
-                dump('Field '.$fieldName.' does not exist on table '.$model->getTable());
-                continue;
-            }
-
-            // Get field value
-            $fieldValue = $request->get($fieldName);
-
-            // If field value is null we set to an empty string
-            if ($fieldValue == null) {
-                $fieldValue = '';
-            }
-
-            // Set field value
-            $model->$fieldName = $fieldValue;
-        }
+        // Loop through and update fields
+        $this->updateModelFieldsFromRequest($model, $fields, $request);
 
         // Save model
         $model->save();
@@ -309,5 +260,45 @@ class AdminController extends Controller
     private function getModelFromTable(string $table): string
     {
         return 'App\Models\\'.Str::studly(Str::singular($table));
+    }
+
+    /**
+     * updateModelFieldsFromRequest
+     *
+     * @param  mixed $model
+     * @param  mixed $fields
+     * @param  mixed $request
+     * @return Model
+     */
+    private function updateModelFieldsFromRequest($model, $fields, $request): Model
+    {
+        foreach ($fields as $field) {
+            // Check if field is manageable field object
+            if (!($field instanceof \App\Classes\ManageableFields\ManageableField)) {
+                continue;
+            }
+
+            // Get field name
+            $fieldName = $field->name;
+
+            // Check if attribute exists on model table
+            if(\Schema::hasColumn($model->getTable(), $fieldName) == false) {
+                dump('Field '.$fieldName.' does not exist on table '.$model->getTable());
+                continue;
+            }
+
+            // Get field value
+            $fieldValue = $request->get($fieldName);
+
+            // If field value is null we set to an empty string
+            if ($fieldValue == null) {
+                $fieldValue = '';
+            }
+
+            // Set field value
+            $model->$fieldName = $fieldValue;
+        }
+
+        return $model;
     }
 }
