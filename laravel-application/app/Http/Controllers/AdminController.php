@@ -37,8 +37,8 @@ class AdminController extends Controller
         // Get browseable columns
         $columns = $model->getBrowsableColumns();
 
-        // Get this model's rows
-        $rows = $model->all();
+        // Get this model's rows after filtering
+        $rows = $this->browseFilter($model, $request);
 
         // Remove id and password columns
         $columns = array_diff($columns, ['id', 'password']);
@@ -49,6 +49,36 @@ class AdminController extends Controller
             'columns' => $columns,
             'rows' => $rows
         ]);
+    }
+
+    private function browseFilter(Model $model, Request $request): mixed
+    {
+        // Get request search
+        $search = $request->get('search');
+
+        // Get request sort
+        $sort = $request->get('sort') ?? 'id';
+
+        // Get request order
+        $order = $request->get('order') ?? 'asc';
+
+        // Get query
+        $query = $model::query();
+
+        // Get searchable columns
+        $searchableColumns = $model->getSearchableColumns();
+
+        // If search is set then search all columns
+        if ($search) {
+            $query->where(function ($query) use ($searchableColumns, $search) {
+                foreach ($searchableColumns as $column) {
+                    $query->orWhere($column, 'like', '%'.$search.'%');
+                }
+            });
+        }
+
+        // Return
+        return $query->orderBy($sort, $order)->get();
     }
 
     /**

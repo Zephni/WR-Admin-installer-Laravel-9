@@ -16,6 +16,15 @@
             type="primary" />
     </div>
 
+    <div class="flex justify-end mb-6">
+        <form action="" method="get">
+            <div class="">
+                <input type="text" name="search" value="{{ request()->get('search') }}" class="w-64 px-2 py-1 rounded border border-gray-500 text-gray-200 bg-gray-800 focus:outline-none focus:border-teal-500" placeholder="Search...">
+                <button type="submit" class="ml-2 px-2 py-1 rounded border border-gray-500 text-gray-200 bg-gray-800 hover:bg-gray-700 focus:outline-none focus:border-teal-500">Search</button>
+            </div>
+        </form>
+    </div>
+
     <div class="overflow-x-auto relative">
         <table class="w-full text-sm text-left text-gray-200">
             <thead class="text-xs uppercase bg-gray-700 text-gray-400">

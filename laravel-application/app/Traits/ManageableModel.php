@@ -164,6 +164,25 @@ trait ManageableModel
     }
 
     /**
+     * getSearchableColumns
+     * Returns an array of columns (fields) that can be searched in the browse view
+     * @return array
+     */
+    public function getSearchableColumns(): array
+    {
+        // Get a collection of all column names from the table
+        $allColumns = collect($this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable()));
+
+        // Reject some default laravel columns
+        $filteredColumns = $allColumns->reject(function($column) {
+            return in_array($column, ['id', 'created_at', 'updated_at', 'deleted_at', 'password']);
+        });
+
+        // Return the filtered columns as an array
+        return $filteredColumns->toArray();
+    }
+
+    /**
      * getManageableFields
      * Returns an array of fields that can be managed in the create and edit views
      * @param string $pageType (Can be 'any', 'browse', 'create' or 'edit')
