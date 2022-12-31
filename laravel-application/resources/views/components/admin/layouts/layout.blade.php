@@ -11,18 +11,22 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         {{-- AlpineJS --}}
+        {{-- Alpine Plugins --}}
+        <script defer src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+
+        {{-- Alpine Core --}}
         <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
         {{-- Flowbite --}}
         <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.4/dist/flowbite.min.css" />
     </head>
-    <body class="relative bg-gray-900 flex h-full" x-data="{ navigationOpen: true }">
+    <body class="relative bg-gray-900 flex h-full" x-data="{ navigationOpen: $persist(true) }">
         {{-- NAVIGATION --}}
         <button title="Expand sidebar" x-show="!navigationOpen" @click="navigationOpen = !navigationOpen" class="absolute top-3 -left-1 bg-gray-800 rounded py-0 pl-2 border border-gray-700">
             <i class="bi bi-arrow-bar-right text-gray-300"></i>
         </button>
-        <aside x-show="navigationOpen" x-transition.duration.400ms class="fixed w-96 min-h-screen px-3 bg-gray-800" aria-label="Sidebar">
-            <button title="Collapse sidebar" @click="navigationOpen = !navigationOpen" class="absolute top-3 -right-2 bg-gray-800 rounded px-1 py-1">
+        <aside x-show="navigationOpen" x-transition.duration.400ms class="fixed z-10 w-96 min-h-screen px-3 bg-gray-800 border-r border-slate-700" aria-label="Sidebar">
+            <button title="Collapse sidebar" @click="navigationOpen = !navigationOpen" class="absolute top-3 -right-3 bg-gray-800 rounded pr-2 py-1">
                 <i class="bi bi-arrow-bar-left text-gray-300"></i>
             </button>
             <div class="h-full min-h-screen overflow-y-auto py-4 px-3">
@@ -148,7 +152,7 @@
 
         {{-- MAIN --}}
         <main class="w-full mx-auto mt-4 px-8 text-white">
-            <div :class="{'pl-0' : !navigationOpen}" class="pl-96">
+            <div :class="{'pl-0' : !navigationOpen}" class="lg:pl-96">
                 @if(session()->has('success'))
                     <x-admin.alert type="success" :message="session()->get('success')" />
                 @endif
