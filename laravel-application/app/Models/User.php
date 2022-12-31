@@ -49,7 +49,7 @@ class User extends Authenticatable
         return Auth::user()->isMaster();
     }
 
-    public function validate(Request $request, ModelPageType $pageType): array
+    public function validationRules(Request $request, ModelPageType $pageType): array
     {
         $rules = [
             'email' => 'required|email|unique:users,email,' . $this->id,
@@ -62,7 +62,7 @@ class User extends Authenticatable
             $rules['password'] = 'required|min:7';
         }
 
-        return $request->validate($rules);
+        return $rules;
     }
 
     public function browseActions(): array

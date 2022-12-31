@@ -36,11 +36,11 @@ class ApplicationConfig extends Model
         return true;
     }
 
-    public function validate(Request $request, ModelPageType $pageType): array
+    public function validationRules(Request $request, ModelPageType $pageType): array
     {
-        return $request->validate([
+        return [
             '_key' => 'required|min:3|unique:application_config,_key,' . $this->id
-        ]);
+        ];
     }
 
     public function getHumanName(bool $plural = true): string

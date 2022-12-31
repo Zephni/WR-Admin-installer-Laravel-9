@@ -163,7 +163,7 @@ class AdminController extends Controller
         }
 
         // Run model validation
-        $model->validate($request, ModelPageType::Create);
+        $request->validate($model->validationRules($request, ModelPageType::Create));
 
         // Run onCreateHook
         $request = $model->onCreateHook($request);
@@ -203,7 +203,7 @@ class AdminController extends Controller
         }
 
         // Run model validation
-        $model->validate($request, ModelPageType::Edit);
+        $request->validate($model->validationRules($request, ModelPageType::Edit));
 
         // Run onEditHook
         $request = $model->onEditHook($request);

@@ -35,15 +35,17 @@ trait ManageableModel
     }
 
     /**
-     * validate
-     * Validate is called on both creation and editing of the model
+     * validationRules
+     * Pass the validation rules for this model (field => rules), called on both creation and editing of the model
      * @param  mixed $request
      * @param  mixed $pageType
      * @return array
      */
-    public function validate(Request $request, ModelPageType $pageType): array
+    public function validationRules(Request $request, ModelPageType $pageType): array
     {
-        return $request->validate([]);
+        return [
+            // 'field' => 'rules'
+        ];
     }
 
     /**
