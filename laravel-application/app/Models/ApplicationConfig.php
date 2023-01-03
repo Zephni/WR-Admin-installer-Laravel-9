@@ -10,10 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ApplicationConfig extends Model
 {
+    // Traits
     use ManageableModel;
 
+    // Table name
     protected $table = 'application_config';
 
+    // Config types (used for _type field)
     private $configTypes = [
         'text' => 'Text',
         'json' => 'JSON',
@@ -29,7 +32,7 @@ class ApplicationConfig extends Model
         'url' => 'URL',
     ];
 
-    /* ManageableModel traits
+    /* ManageableModel methods
     -----------------------------------------------------------*/
     public function isViewable(): bool
     {

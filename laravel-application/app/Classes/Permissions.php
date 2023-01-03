@@ -22,7 +22,6 @@ class Permissions
     }
 
     /**
-     * asString
      * Returns a serialized version of the permissions object
      * @return string
      */
@@ -43,7 +42,6 @@ class Permissions
     }
 
     /**
-     * fromString
      * Returns a permissions object from a serialized string
      * @param  mixed $string
      * @return Permissions

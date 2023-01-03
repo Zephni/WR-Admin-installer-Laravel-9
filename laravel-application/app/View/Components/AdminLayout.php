@@ -28,11 +28,13 @@ class AdminLayout extends Component
         // Get manageable models
         $manageableModels = $this->getManageableModels();
 
+        // Set data for all views with this layout
         $data = [
             'navigation' => config('admin-navigation'),
             'manageableModels' => $manageableModels
         ];
 
+        // Return the view
         return view('components.admin.layouts.layout', $data);
     }
 

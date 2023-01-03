@@ -20,9 +20,45 @@ use \App\Enums\ModelPageType;
 
 class User extends Authenticatable
 {
+    // Traits
     use ManageableModel, SoftDeletes, HasApiTokens, HasFactory, Notifiable;
 
-    /* ManageableModel traits
+    // Table name
+    protected $table = 'users';
+
+    /* Attribute modifiers
+    -----------------------------------------------------------*/
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime'
+    ];
+
+    /* ManageableModel methods
     -----------------------------------------------------------*/
     public function isViewable(): bool
     {
@@ -131,39 +167,6 @@ class User extends Authenticatable
 
         return $manageableFields;
     }
-
-
-    /* Attribute modifiers
-    -----------------------------------------------------------*/
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime'
-    ];
 
     /* Custom methods
     -----------------------------------------------------------*/

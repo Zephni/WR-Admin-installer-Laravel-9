@@ -14,28 +14,43 @@ use \App\Enums\ModelPageType;
  */
 trait ManageableModel
 {
+    /**
+     * Return true if the model can be viewed in the admin panel
+     * @return bool
+     */
     public function isViewable(): bool
     {
         return false;
     }
 
+    /**
+     * Return true if the model can be created in the admin panel
+     * @return bool
+     */
     public function isCreatable(): bool
     {
         return false;
     }
 
+    /**
+     * Return true if the model can be edited in the admin panel
+     * @return bool
+     */
     public function isEditable(): bool
     {
         return false;
     }
 
+    /**
+     * Return true if the model can be deleted in the admin panel
+     * @return bool
+     */
     public function isDeletable(): bool
     {
         return false;
     }
 
     /**
-     * validationRules
      * Pass the validation rules for this model (field => rules), called on both creation and editing of the model
      * @param  mixed $request
      * @param  mixed $pageType
@@ -49,7 +64,6 @@ trait ManageableModel
     }
 
     /**
-     * browseActions
      * Should return an array of actions that can be performed on the model in the browse view
      * Key is the action name, value is the view / html for the action
      * @return array
@@ -60,7 +74,6 @@ trait ManageableModel
     }
 
     /**
-     * defaultBrowseActions
      * Should never override this method in the model
      * Should return an array of actions that can be performed on the model in the browse view
      * Key is the action name, value is the view / html for the action
@@ -102,7 +115,6 @@ trait ManageableModel
     }
 
     /**
-     * paginateAmount
      * The amount of models to show per page in the browse view
      * @return int
      */
@@ -112,9 +124,9 @@ trait ManageableModel
     }
 
     /**
-     * onCreateHook
      * Intercept and modify request when the model is created (ran after validation but just before model values are updated)
      * Should use $request->merge() to add or replace values to the request
+     * @param  Request $request
      * @return Request
      */
     public function onCreateHook(Request $request): Request
@@ -123,9 +135,9 @@ trait ManageableModel
     }
 
     /**
-     * onEditHook
      * Intercept and modify request when the model is edited (ran after validation but just before model values are updated)
      * Should use $request->merge() to add or replace values to the request
+     * @param  Request $request
      * @return Request
      */
     public function onEditHook(Request $request): Request
@@ -134,8 +146,8 @@ trait ManageableModel
     }
 
     /**
-     * onDeleteHook
      * Intercept and modify request when the model is deleted (ran just before model is deleted)
+     * @param  Request $request
      * @return Request
      */
     public function onDeleteHook(Request $request): Request
@@ -144,8 +156,8 @@ trait ManageableModel
     }
 
     /**
-     * getHumanName
      * Gets the human name of the model
+     * @param  bool $plural = true
      * @return string
      */
     public function getHumanName(bool $plural = true): string
@@ -166,7 +178,6 @@ trait ManageableModel
     }
 
     /**
-     * getBrowsableColumns
      * Returns an array of columns (fields) that can be seen in the browse view
      * @return array
      */
@@ -192,7 +203,6 @@ trait ManageableModel
     }
 
     /**
-     * getSearchableColumns
      * Returns an array of columns (fields) that can be searched in the browse view
      * @return array
      */
@@ -211,9 +221,8 @@ trait ManageableModel
     }
 
     /**
-     * getManageableFields
      * Returns an array of fields that can be managed in the create and edit views
-     * @param string $pageType (Can be 'any', 'browse', 'create' or 'edit')
+     * @param ModelPageType $pageType
      * @return array
      */
     public function getManageableFields(ModelPageType $pageType): array
@@ -222,7 +231,6 @@ trait ManageableModel
     }
 
     /**
-     * getNewInstance
      * Gets a new instance of the model statically
      * @return self
      */

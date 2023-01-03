@@ -15,7 +15,6 @@ use App\Classes\Permissions;
 class AuthController extends Controller
 {
     /**
-     * register
      * Register a new user (post request)
      * @param  mixed $request
      * @return Response
@@ -49,7 +48,6 @@ class AuthController extends Controller
     }
 
     /**
-     * login
      * Login (post request)
      * @param  mixed $request
      * @return Response
@@ -81,7 +79,6 @@ class AuthController extends Controller
 
 
     /**
-     * forgot_password
      * Forgot password (post request), sends email to user with reset link
      * @param  mixed $request
      * @return Response
@@ -105,7 +102,6 @@ class AuthController extends Controller
     }
 
     /**
-     * reset_password
      * Resets a users password by timed token sent to email if valid (post request)
      * @param  mixed $request
      * @return Response
@@ -141,7 +137,6 @@ class AuthController extends Controller
 
 
     /**
-     * logout
      * Logout the current user (post request)
      * @param  mixed $request
      * @return Response

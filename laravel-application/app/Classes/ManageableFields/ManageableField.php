@@ -29,7 +29,6 @@ class ManageableField
     }
 
     /**
-     * render
      * Override this method to render the field
      * @return mixed
      */
@@ -39,7 +38,6 @@ class ManageableField
     }
 
     /**
-     * options
      * Appends the given options to the options array
      * @param  mixed $options
      * @return ManageableField
@@ -51,7 +49,6 @@ class ManageableField
     }
 
     /**
-     * getValue
      * Return old value if it exists, otherwise return the default value
      * @return string
      */
@@ -61,7 +58,6 @@ class ManageableField
     }
 
     /**
-     * getLabel
      * Prettifies the label by replacing underscores with spaces and capitalizing the first letter of each word
      * @return string
      */
@@ -71,7 +67,6 @@ class ManageableField
     }
 
     /**
-     * getPlaceholder
      * Return the placeholder if it exists, otherwise return a default placeholder
      * @return string
      */

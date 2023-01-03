@@ -15,8 +15,7 @@ use \App\Enums\ModelPageType;
 class AdminController extends Controller
 {
     /**
-     * manageable_model_browse
-     *
+     * Returns the view from browsing the given table (model)
      * @param  mixed $request
      * @param  mixed $table
      * @return View | RedirectResponse
@@ -51,6 +50,12 @@ class AdminController extends Controller
         ]);
     }
 
+    /**
+     * Filters the given model's rows based on the request
+     * @param Model $model
+     * @param Request $request
+     * @return mixed
+     */
     private function browseFilter(Model $model, Request $request): mixed
     {
         // Get request search
@@ -82,8 +87,7 @@ class AdminController extends Controller
     }
 
     /**
-     * manageableModelCreate
-     *
+     * Returns the view for creating a new manageable model
      * @param  mixed $request
      * @param  mixed $table
      * @return View | RedirectResponse
@@ -112,8 +116,7 @@ class AdminController extends Controller
     }
 
     /**
-     * manageableModelEdit
-     *
+     * Returns the view for editing a manageable model
      * @param  mixed $request
      * @param  mixed $table
      * @param  mixed $id
@@ -143,8 +146,7 @@ class AdminController extends Controller
     }
 
     /**
-     * manageableModelCreateSubmit
-     *
+     * Handles the submission of a creating a manageable model
      * @param  mixed $request
      * @param  mixed $table
      * @return View | RedirectResponse
@@ -182,8 +184,7 @@ class AdminController extends Controller
     }
 
     /**
-     * manageableModelEditSubmit
-     *
+     * Handles the submission of a editing a manageable model
      * @param  mixed $request
      * @param  mixed $table
      * @param  mixed $id
@@ -222,8 +223,7 @@ class AdminController extends Controller
     }
 
     /**
-     * manageableModelDeleteSubmit
-     *
+     * Handles the submission of a deleting a manageable model
      * @param  mixed $request
      * @param  mixed $table
      * @param  mixed $id
@@ -253,8 +253,7 @@ class AdminController extends Controller
     }
 
     /**
-     * loginAsUser
-     *
+     * Logs in as the user with the given id
      * @param  mixed $request
      * @param  mixed $userid
      * @return RedirectResponse
@@ -282,7 +281,6 @@ class AdminController extends Controller
     }
 
     /**
-     * getModelFromTable
      * Returns a string of the fully qualified model class name from the table name
      * @param  mixed $table
      * @return string
@@ -293,8 +291,7 @@ class AdminController extends Controller
     }
 
     /**
-     * updateModelFieldsFromRequest
-     *
+     * Updates the given model's fields from the request
      * @param  mixed $model
      * @param  mixed $fields
      * @param  mixed $request
