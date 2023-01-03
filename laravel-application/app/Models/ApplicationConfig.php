@@ -75,7 +75,7 @@ class ApplicationConfig extends Model
     public function getManageableFields(ModelPageType $pageType): array
     {
         return [
-            new ManageableFields\Select('_type', $this->type, $this->configTypes),
+            new ManageableFields\Select('_type', $this->_type, $this->configTypes),
             new ManageableFields\Input('_key', $this->_key),
             new ManageableFields\TextArea('_value', $this->_value),
             new ManageableFields\TextArea('_description', $this->_description),

@@ -14,8 +14,8 @@
         id="mf_{{ $name }}"
         name="{{ $name }}"
         {{ $attributes->merge(['class' => 'w-full border border-gray-500 bg-gray-900 text-gray-300 rounded-md px-2 py-2']) }}>
-        @foreach($options['options'] as $key => $value)
-            <option value="{{ $key }}" {{ $key == $value ? 'selected' : '' }}>{{ $value }}</option>
+        @foreach($options['options'] as $optionKey => $optionValue)
+            <option value="{{ $optionKey }}" {{ $optionKey == $value ? 'selected' : '' }}>{{ $optionValue }}</option>
         @endforeach
     </select>
 

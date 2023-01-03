@@ -9,7 +9,10 @@
     <hr class="my-4 h-px bg-gray-500 border-0">
 
     <div class="w-full mb-6 flex justify-between">
-        <span>Total {{ Str::lower($model->getHumanName()) }}: <b>{{ $rows->total() }}</b></span>
+        <span>
+            @if(request()->get('search')) Filtered @else Total @endif
+            {{ Str::lower($model->getHumanName()) }}: <b>{{ $rows->total() }}</b>
+        </span>
         <x-admin.button
             href="{{ route('admin.manageable-models.create', ['table' => $model->getTable()]) }}"
             text="Create new"
