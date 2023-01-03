@@ -51,7 +51,7 @@ trait ManageableModel
     /**
      * browseActions
      * Should return an array of actions that can be performed on the model in the browse view
-     * Key is the action name, value is the url
+     * Key is the action name, value is the view / html for the action
      * @return array
      */
     public function browseActions(): array
@@ -63,7 +63,7 @@ trait ManageableModel
      * defaultBrowseActions
      * Should never override this method in the model
      * Should return an array of actions that can be performed on the model in the browse view
-     * Key is the action name, value is the url
+     * Key is the action name, value is the view / html for the action
      * @return array
      */
     public function defaultBrowseActions(): array
@@ -103,7 +103,7 @@ trait ManageableModel
 
     /**
      * paginateAmount
-     *
+     * The amount of models to show per page in the browse view
      * @return int
      */
     public function paginateAmount(): int
@@ -172,7 +172,23 @@ trait ManageableModel
      */
     public function getBrowsableColumns(): array
     {
-        return [];
+        // Default columns to show in the browse view if method is not overridden
+        $showMaxColumns = 2;
+
+        // Get the columns from the table
+        $columns = collect($this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable()));
+
+        // Remove some default laravel columns
+        $columns = $columns->reject(function ($column) use ($columns, $showMaxColumns) {
+            if(count($columns) <= $showMaxColumns) return false;
+            return in_array($column, ['id', 'created_at', 'updated_at', 'deleted_at', 'password', 'email_verified_at', 'remember_token']);
+        });
+
+        // Take up to a maximum of $showMaxColumns columns depending on how many columns are left
+        $columns = $columns->take(min($showMaxColumns, $columns->count()));
+
+        // Return the columns as an array
+        return $columns->toArray();
     }
 
     /**

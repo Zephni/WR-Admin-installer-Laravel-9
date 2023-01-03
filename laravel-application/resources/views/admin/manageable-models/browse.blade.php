@@ -53,6 +53,10 @@
                                 {
                                     $value = Str::limit($value, 30, '...');
                                 }
+                                else if($value instanceof \Carbon\Carbon)
+                                {
+                                    $value = $value->format('Y-m-d H:ia');
+                                }
                                 else
                                 {
                                     $value = '';// TODO: Implement other types of values
