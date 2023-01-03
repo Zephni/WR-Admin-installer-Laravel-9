@@ -38,7 +38,7 @@ class AdminController extends Controller
         $columns = $model->getBrowsableColumns();
 
         // Get this model's rows after filtering
-        $rows = $this->browseFilter($model, $request);
+        $rows = $this->browseFilter($model, $request)->withQueryString();
 
         // Remove id and password columns
         $columns = array_diff($columns, ['id', 'password']);
@@ -78,7 +78,7 @@ class AdminController extends Controller
         }
 
         // Return
-        return $query->orderBy($sort, $order)->get();
+        return $query->orderBy($sort, $order)->paginate($model->paginateAmount());
     }
 
     /**

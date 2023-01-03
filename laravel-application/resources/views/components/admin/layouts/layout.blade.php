@@ -78,14 +78,6 @@
                                     </button>
                                 </div>
                                 <ul id="nav-dropdown-{{ $parentIndex }}" class="hidden py-2 space-y-2">
-                                    @if($manageableModelInstance->isViewable())
-                                        <li class="relative ml-8">
-                                            <a href="{{ route('admin.manageable-models.browse', $manageableModelInstance->getTable()) }}" class="flex items-center p-2 w-full text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700 pl-3 @if(request()->route()->getName() == 'admin.manageable-models.browse' && request()->route('table') == $manageableModelInstance->getTable()) bg-slate-700 @endif">Browse</a>
-                                            @if(request()->route()->getName() == 'admin.manageable-models.browse' && request()->route('table') == $manageableModelInstance->getTable())
-                                                <span class="absolute inset-y-0 -left-1 w-1 bg-teal-700 rounded-tr-sm rounded-br-sm" aria-hidden="true"></span>
-                                            @endif
-                                        </li>
-                                    @endif
                                     @if($manageableModelInstance->isCreatable())
                                         <li class="relative ml-8">
                                             <a href="{{ route('admin.manageable-models.create', $manageableModelInstance->getTable()) }}" class="flex items-center p-2 w-full text-base font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700 pl-3 @if(request()->route()->getName() == 'admin.manageable-models.create' && request()->route('table') == $manageableModelInstance->getTable()) bg-slate-700 @endif">Create</a>

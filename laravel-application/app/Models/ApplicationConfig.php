@@ -14,6 +14,21 @@ class ApplicationConfig extends Model
 
     protected $table = 'application_config';
 
+    private $configTypes = [
+        'text' => 'Text',
+        'json' => 'JSON',
+        'array' => 'Array (key => value\n)',
+        'boolean' => 'Boolean (true/false)',
+        'integer' => 'Integer',
+        'float' => 'Float',
+        'date' => 'Date (Y-m-d)',
+        'datetime' => 'Date & Time (Y-m-d H:i:s)',
+        'time' => 'Time (H:i:s)',
+        'timestamp' => 'Timestamp',
+        'email' => 'Email',
+        'url' => 'URL',
+    ];
+
     /* ManageableModel traits
     -----------------------------------------------------------*/
     public function isViewable(): bool
@@ -51,6 +66,7 @@ class ApplicationConfig extends Model
     public function getBrowsableColumns(): array
     {
         return [
+            '_type',
             '_key',
             '_value'
         ];
@@ -59,6 +75,7 @@ class ApplicationConfig extends Model
     public function getManageableFields(ModelPageType $pageType): array
     {
         return [
+            new ManageableFields\Select('_type', $this->type, $this->configTypes),
             new ManageableFields\Input('_key', $this->_key),
             new ManageableFields\TextArea('_value', $this->_value),
             new ManageableFields\TextArea('_description', $this->_description),

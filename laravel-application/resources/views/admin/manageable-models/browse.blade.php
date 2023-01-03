@@ -9,7 +9,7 @@
     <hr class="my-4 h-px bg-gray-500 border-0">
 
     <div class="w-full mb-6 flex justify-between">
-        <span>Total {{ Str::lower($model->getHumanName()) }}: <b>{{ count($rows) }}</b></span>
+        <span>Total {{ Str::lower($model->getHumanName()) }}: <b>{{ $rows->total() }}</b></span>
         <x-admin.button
             href="{{ route('admin.manageable-models.create', ['table' => $model->getTable()]) }}"
             text="Create new"
@@ -83,6 +83,10 @@
                     No {{ Str::lower($model->getHumanName()) }} found,
                     <a href="{{ route('admin.manageable-models.create', ['table' => $model->getTable()]) }}" class="text-teal-500 hover:text-teal-400">create new</a>.
                 </div>
+            </div>
+        @else
+            <div class="flex items-center flex-col mt-10">
+                {{ $rows->links() }}
             </div>
         @endif
     </div>

@@ -102,6 +102,16 @@ trait ManageableModel
     }
 
     /**
+     * paginateAmount
+     *
+     * @return int
+     */
+    public function paginateAmount(): int
+    {
+        return 15;
+    }
+
+    /**
      * onCreateHook
      * Intercept and modify request when the model is created (ran after validation but just before model values are updated)
      * Should use $request->merge() to add or replace values to the request
