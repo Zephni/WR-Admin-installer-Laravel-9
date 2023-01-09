@@ -54,16 +54,22 @@ trait ManageableModel
     }
 
     /**
-     * Pass the validation rules for this model (field => rules), called on both creation and editing of the model
+     * Pass the validation rules for this model (field => rules), called on both creation and editing of the model.
+     * Note that we must override this method in the model otherwise an exception will be thrown
      * @param  mixed $request
      * @param  mixed $pageType
      * @return array
      */
     public function validationRules(Request $request, ModelPageType $pageType): array
     {
-        return [
-            // 'field' => 'rules'
-        ];
+        throw new \Exception('validationRules() method must be overridden in the model: "'.get_class($this).'"');
+
+        /*
+            return [
+                'field' => 'rules',
+                ...
+            ];
+        */
     }
 
     /**

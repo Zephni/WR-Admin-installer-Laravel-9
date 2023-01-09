@@ -57,6 +57,7 @@ class ApplicationConfig extends Model
     public function validationRules(Request $request, ModelPageType $pageType): array
     {
         return [
+            '_type' => 'required|in:' . implode(',', array_keys($this->configTypes)),
             '_key' => 'required|min:3|unique:application_config,_key,' . $this->id
         ];
     }
