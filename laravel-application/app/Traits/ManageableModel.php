@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Illuminate\Database\Eloquent\Model;
 use Str;
 use Symfony\Component\HttpFoundation\Request;
 use \App\Enums\ModelPageType;
@@ -231,11 +232,53 @@ trait ManageableModel
     }
 
     /**
+     * Builds an option set for a select field from a relationship
+     * @param  string $relationshipModel Pass ModelName::class
+     * @param  string $displayField Pass the field from the relationship model to display in the select options (e.g. 'name')
+     * @param  callable $filterFunction Pass a function to filter the relationship items. Eg: function($query) { $query->where('name', 'like', '%test%'); }
+     * @return array
+     */
+    public function optionsArrayFromRelationship(string $relationshipModel, string $displayField, callable $filterFunction = null): array
+    {
+        // Check that the relationship model exists, if not throw a hard error
+        if(!class_exists($relationshipModel)) {
+            throw new \Exception("Relationship model {$relationshipModel} does not exist");
+        }
+
+        // Initialise the options array
+        $options = [];
+
+        // Get the relationship items, filtered if a filter function is provided, otherwise get all items
+        $relationshipItems = $filterFunction ?
+            $relationshipModel::where($filterFunction)->get()
+            : $relationshipModel::all();
+
+        // Build the options array from the relationship items
+        foreach($relationshipItems as $item)
+        {
+            $options[$item->{"id"}] = $item->{$displayField};
+        }
+
+        // Return the options array
+        return $options;
+    }
+
+    /**
      * Gets a new instance of the model statically
      * @return self
      */
     public static function getNewInstance(): self
     {
         return new self();
+    }
+
+    /**
+     * Gets a model instance by id statically
+     * @param  int $id
+     * @return self
+     */
+    public static function getInstance(int $id): self
+    {
+        return self::find($id);
     }
 }
