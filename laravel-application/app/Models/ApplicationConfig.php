@@ -84,4 +84,10 @@ class ApplicationConfig extends Model
             new ManageableFields\TextArea('_description', $this->_description),
         ];
     }
+
+    // Has one user
+    public function user()
+    {
+        return $this->hasOne('App\Models\User', 'id', 'user_id');
+    }
 }

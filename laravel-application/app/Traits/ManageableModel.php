@@ -3,6 +3,8 @@
 namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use SebastianBergmann\CodeCoverage\Report\Xml\Method;
 use Str;
 use Symfony\Component\HttpFoundation\Request;
 use \App\Enums\ModelPageType;
@@ -238,11 +240,11 @@ trait ManageableModel
      * @param  callable $filterFunction Pass a function to filter the relationship items. Eg: function($query) { $query->where('name', 'like', '%test%'); }
      * @return array
      */
-    public function optionsArrayFromRelationship(string $relationshipModel, string $displayField, callable $filterFunction = null): array
+    public function optionsFromModel(string $model, string $displayField, callable $filterFunction = null): array
     {
-        // Check that the relationship model exists, if not throw a hard error
-        if(!class_exists($relationshipModel)) {
-            throw new \Exception("Relationship model {$relationshipModel} does not exist");
+        // Check that the model exists, if not throw a hard error
+        if(!class_exists($model)) {
+            throw new \Exception("Model {$model} does not exist");
         }
 
         // Initialise the options array
@@ -250,8 +252,8 @@ trait ManageableModel
 
         // Get the relationship items, filtered if a filter function is provided, otherwise get all items
         $relationshipItems = $filterFunction ?
-            $relationshipModel::where($filterFunction)->get()
-            : $relationshipModel::all();
+            $model::where($filterFunction)->get()
+            : $model::all();
 
         // Build the options array from the relationship items
         foreach($relationshipItems as $item)
@@ -262,6 +264,23 @@ trait ManageableModel
         // Return the options array
         return $options;
     }
+
+    /**
+     * Builds an option set for a select field from a relationship
+     * @param Relation $relation Pass the relationship method itself eg. $this->auther() which returns a Relation object like BelongsTo
+     * @param  string $displayField Pass the field from the relationship model to display in the select options (e.g. 'name')
+     * @param  callable $filterFunction Pass a function to filter the relationship items. Eg: function($query) { $query->where('name', 'like', '%test%'); }
+     * @return array
+     */
+    public function optionsFromRelationship(Relation $relation, string $displayField, callable $filterFunction = null): array
+    {
+        // Get the class from $relation
+        $relatedModel = get_class($relation->getRelated());
+
+        // Return the options array from the relationship model
+        return $this->optionsFromModel($relatedModel, $displayField, $filterFunction);
+    }
+
 
     /**
      * Gets a new instance of the model statically

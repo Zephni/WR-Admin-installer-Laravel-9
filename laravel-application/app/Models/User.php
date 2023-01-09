@@ -207,4 +207,10 @@ class User extends Authenticatable
     {
         return $this->getPermissions()->master;
     }
+
+    // Belongs to ApplicationConfig
+    public function applicationConfig()
+    {
+        return $this->belongsTo(ApplicationConfig::class);
+    }
 }
