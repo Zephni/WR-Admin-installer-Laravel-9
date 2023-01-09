@@ -25,4 +25,17 @@ class Select extends ManageableField
             ])
         ]);
     }
+
+    public function getOptionValue(): string
+    {
+        // If the value is not in the options array, return the value
+        if (!array_key_exists($this->getValue(), $this->options['options'])) {
+            return $this->getValue();
+        }
+        // Otherwise, return the human readable value
+        else
+        {
+            return $this->options['options'][$this->getValue()];
+        }
+    }
 }

@@ -38,7 +38,7 @@ class AdminController extends Controller
         $columns = $model->getBrowsableColumns();
 
         // Get this model's rows after filtering
-        $rows = $this->browseFilter($model, $request)->withQueryString();
+        $rows = $this->browseAndFilter($model, $request)->withQueryString();
 
         // Remove id and password columns
         $columns = array_diff($columns, ['id', 'password']);
@@ -57,7 +57,7 @@ class AdminController extends Controller
      * @param Request $request
      * @return mixed
      */
-    private function browseFilter(Model $model, Request $request): mixed
+    private function browseAndFilter(Model $model, Request $request): mixed
     {
         // Get request search
         $search = $request->get('search');
@@ -83,8 +83,29 @@ class AdminController extends Controller
             });
         }
 
+        // Order by and paginate
+        $paginatedRows = $query->orderBy($sort, $order)->paginate($model->paginateAmount());
+
+        // Loop through the paginated rows (just the ones for this page) and check the ManageableField that relates to the column
+        for($i = 0; $i < count($paginatedRows); $i++) {
+            // Get manageable fields from this row
+            $manageableFields = $paginatedRows[$i]->getManageableFields(ModelPageType::Browse);
+
+            // Loop through the manageable fields
+            foreach ($manageableFields as $manageableField) {
+                // If the manageable field is a Select field
+                if ($manageableField instanceof \App\Classes\ManageableFields\Select) {
+                    // Get the column name
+                    $columnName = $manageableField->name;
+
+                    // Set the human readable value of the column
+                    $paginatedRows[$i]->$columnName = $manageableField->getOptionValue();
+                }
+            }
+        }
+
         // Return
-        return $query->orderBy($sort, $order)->paginate($model->paginateAmount());
+        return $paginatedRows;
     }
 
     /**
