@@ -58,6 +58,15 @@ class ManageableField
     }
 
     /**
+     * Return the value to be displayed in the browse view
+     * @return string
+     */
+    public function getBrowseValue(): string
+    {
+        return $this->getValue();
+    }
+
+    /**
      * Prettifies the label by replacing underscores with spaces and capitalizing the first letter of each word
      * @return string
      */

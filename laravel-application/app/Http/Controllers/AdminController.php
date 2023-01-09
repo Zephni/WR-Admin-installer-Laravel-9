@@ -86,21 +86,15 @@ class AdminController extends Controller
         // Order by and paginate
         $paginatedRows = $query->orderBy($sort, $order)->paginate($model->paginateAmount());
 
-        // Loop through the paginated rows (just the ones for this page) and check the ManageableField that relates to the column
+        // Loop through the paginated rows (just the ones for this page) and get the manageable field browse values
         for($i = 0; $i < count($paginatedRows); $i++) {
             // Get manageable fields from this row
             $manageableFields = $paginatedRows[$i]->getManageableFields(ModelPageType::Browse);
 
             // Loop through the manageable fields
             foreach ($manageableFields as $manageableField) {
-                // If the manageable field is a Select field
-                if ($manageableField instanceof \App\Classes\ManageableFields\Select) {
-                    // Get the column name
-                    $columnName = $manageableField->name;
-
-                    // Set the human readable value of the column
-                    $paginatedRows[$i]->$columnName = $manageableField->getOptionValue();
-                }
+                // Get the browse value for this manageable field
+                $paginatedRows[$i]->{$manageableField->name} = $manageableField->getBrowseValue();
             }
         }
 

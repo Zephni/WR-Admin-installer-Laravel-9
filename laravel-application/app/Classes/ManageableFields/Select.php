@@ -26,7 +26,7 @@ class Select extends ManageableField
         ]);
     }
 
-    public function getOptionValue(): string
+    public function getBrowseValue(): string
     {
         // If the value is not in the options array, return the value
         if (!array_key_exists($this->getValue(), $this->options['options'])) {
