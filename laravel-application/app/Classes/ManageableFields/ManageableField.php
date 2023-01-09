@@ -58,7 +58,10 @@ class ManageableField
     }
 
     /**
-     * Return the value to be displayed in the browse view
+     * Return the value to be displayed in the browse view, this is the same as getValue() by default
+     * but may be overriden, for example, to display a formatted date, or a boolean as a string, or in
+     * the case of a "select" field the value of the selected option instead of the key itself
+     *
      * @return string
      */
     public function getBrowseValue(): string
