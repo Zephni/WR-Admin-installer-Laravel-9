@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Traits\ManageableModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Str;
@@ -22,11 +23,11 @@ class AdminController extends Controller
      */
     public function manageableModelBrowse(Request $request, string $table): View | RedirectResponse
     {
-        // Get this model's class
-        $modelClass = $this->getModelFromTable($table);
+        // Get this manageable model's class
+        $manageableModelClass = $this->getManageableModelFromTable($table);
 
-        // Get instance of this model
-        $model = new $modelClass();
+        // Get an instance of this manageable model
+        $model = $manageableModelClass::getNewInstance();
 
         // Check permissions and redirect if not allowed
         if ($model->isViewable() == false) {
@@ -94,11 +95,11 @@ class AdminController extends Controller
      */
     public function manageableModelCreate(Request $request, string $table): View | RedirectResponse
     {
-        // Get this model's class
-        $modelClass = $this->getModelFromTable($table);
+        // Get this manageable model's class
+        $manageableModelClass = $this->getManageableModelFromTable($table);
 
-        // Get instance of this model
-        $model = new $modelClass();
+        // Get instance of this manageable model
+        $model = $manageableModelClass::getNewInstance();
 
         // Check permissions and redirect if not allowed
         if ($model->isCreatable() == false) {
@@ -125,10 +126,10 @@ class AdminController extends Controller
     public function manageableModelEdit(Request $request, string $table, int $id): View | RedirectResponse
     {
         // Get this model's class
-        $modelClass = $this->getModelFromTable($table);
+        $manageableModelClass = $this->getManageableModelFromTable($table);
 
-        // Get instance of this model by id
-        $model = $modelClass::find($id);
+        // Get instance of this manageable model
+        $model = $manageableModelClass::getInstance($id);
 
         // Check permissions and redirect if not allowed
         if ($model->isEditable() == false) {
@@ -153,11 +154,11 @@ class AdminController extends Controller
      */
     public function manageableModelCreateSubmit(Request $request, string $table): View | RedirectResponse
     {
-        // Get this model's class
-        $modelClass = $this->getModelFromTable($table);
+        // Get this manageable model's class
+        $manageableModelClass = $this->getManageableModelFromTable($table);
 
-        // Get instance of this model
-        $model = new $modelClass();
+        // Get an instance of this model
+        $model = $manageableModelClass::getNewInstance();
 
         // Check permissions and redirect if not allowed
         if ($model->isCreatable() == false) {
@@ -192,11 +193,11 @@ class AdminController extends Controller
      */
     public function manageableModelEditSubmit(Request $request, string $table, int $id): View | RedirectResponse
     {
-        // Get this model's class
-        $modelClass = $this->getModelFromTable($table);
+        // Get this manageable model's class
+        $manageableModelClass = $this->getManageableModelFromTable($table);
 
         // Get instance of this model by id
-        $model = $modelClass::find($id);
+        $model = $manageableModelClass::getInstance($id);
 
         // Check permissions and redirect if not allowed
         if ($model->isEditable() == false) {
@@ -285,9 +286,26 @@ class AdminController extends Controller
      * @param  mixed $table
      * @return string
      */
-    private function getModelFromTable(string $table): string
+    private function getManageableModelFromTable(string $table): string
     {
-        return 'App\Models\\'.Str::studly(Str::singular($table));
+        $modelString = 'App\Models\\'.Str::studly(Str::singular($table));
+
+        // Fail if class does not exist
+        if (class_exists($modelString) == false) {
+            throw new \Exception('Class '.$modelString.' does not exist');
+        }
+
+        // Fail if is not a Model
+        if (is_subclass_of($modelString, Model::class) == false) {
+            throw new \Exception($modelString.' does not extend '.Model::class);
+        }
+
+        // Fail if model does not have the ManageableModel trait
+        if (in_array(ManageableModel::class, class_uses($modelString)) == false) {
+            throw new \Exception('Model '.$modelString.' does not have the ManageableModel trait');
+        }
+
+        return $modelString;
     }
 
     /**
