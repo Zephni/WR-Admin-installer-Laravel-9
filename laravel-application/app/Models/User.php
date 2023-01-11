@@ -72,7 +72,8 @@ class User extends Authenticatable
 
     public function isEditable(): bool
     {
-        return Auth::user()->isMaster();
+        // User can edit themselves, but only master can edit other users
+        return $this->id == Auth::user()->id || Auth::user()->isMaster();
     }
 
     public function isDeletable(): bool
