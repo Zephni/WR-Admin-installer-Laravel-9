@@ -180,8 +180,14 @@ class AdminController extends Controller
             return redirect()->route('admin.dashboard')->with('error', 'You do not have permission to create '.$model->getHumanName());
         }
 
+        // We remove the __validated__ field from the request if it exists
+        $request->request->remove('__validated__');
+
         // Run model validation
         $request->validate($model->validationRules($request, ModelPageType::Create));
+
+        // We add __validated___ which is used to confirm validation has been run
+        $request->merge(['__validated__' => true]);
 
         // Run onCreateHook
         $request = $model->onCreateHook($request);
@@ -219,8 +225,14 @@ class AdminController extends Controller
             return redirect()->route('admin.dashboard')->with('error', 'You do not have permission to edit '.$model->getHumanName());
         }
 
+        // We remove the __validated__ field from the request if it exists
+        $request->request->remove('__validated__');
+
         // Run model validation
         $request->validate($model->validationRules($request, ModelPageType::Edit));
+
+        // We add __validated___ which is used to confirm validation has been run
+        $request->merge(['__validated__' => true]);
 
         // Run onEditHook
         $request = $model->onEditHook($request);
@@ -324,7 +336,9 @@ class AdminController extends Controller
     }
 
     /**
-     * Updates the given model's fields from the request
+     * Updates the given model's fields from the request, note that the request must be validated before this is called,
+     * the model must have the ManageableModel trait, and the fields must be an array of ManageableField objects,
+     * this allows us to be certain that the request has been validated, and both the model and fields are also valid.
      * @param  mixed $model
      * @param  mixed $fields
      * @param  mixed $request
@@ -332,6 +346,20 @@ class AdminController extends Controller
      */
     private function updateModelFieldsFromRequest($model, $fields, $request): Model
     {
+        // Check if model has the ManageableModel trait
+        if (in_array(ManageableModel::class, class_uses($model)) == false) {
+            throw new \Exception('Model '.get_class($model).' must have the ManageableModel trait to update fields from request');
+        }
+
+        // Check if request has been validated, this is to ensure we intentionally validated the
+        // request before attempting to update the model
+        if ($request->get('__validated__') != true) {
+            throw new \Exception('Request has not been validated');
+        }
+
+        // Get all columns that belong to this model's table
+        $columns = \Schema::getColumnListing($model->getTable());
+
         foreach ($fields as $field) {
             // Check if field is manageable field object
             if (!($field instanceof \App\Classes\ManageableFields\ManageableField)) {
@@ -341,9 +369,9 @@ class AdminController extends Controller
             // Get field name
             $fieldName = $field->name;
 
-            // Check if attribute exists on model table
-            if(\Schema::hasColumn($model->getTable(), $fieldName) == false) {
-                dump('Field '.$fieldName.' does not exist on table '.$model->getTable());
+            // Check if table column exists
+            if(in_array($fieldName, $columns) == false) {
+                dd('Field '.$fieldName.' does not exist on table '.$model->getTable());
                 continue;
             }
 
