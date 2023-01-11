@@ -240,6 +240,53 @@ trait ManageableModel
     }
 
     /**
+     * Returns the page title for the given page type
+     * @param ModelPageType $pageType
+     * @return string
+     */
+    public function getPageTitle(ModelPageType $pageType): string
+    {
+        if($pageType == ModelPageType::Browse)
+            return $this->getHumanName(true);
+        else if($pageType == ModelPageType::Create)
+            return 'Creating new ' . strtolower($this->getHumanName(false));
+        else if ($pageType == ModelPageType::Edit)
+            return 'Editing ' . strtolower($this->getHumanName(false)) . ' #' . $this->id;
+
+        return "";
+    }
+
+    /**
+     * Returns the route for the submit button for the given page type
+     * @param ModelPageType $pageType
+     * @return string
+     */
+    public function getSubmitRoute(ModelPageType $pageType): string
+    {
+        if($pageType == ModelPageType::Create)
+            return route('admin.manageable-models.create', ['table' => $this->getTable()]);
+        else if($pageType == ModelPageType::Edit)
+            return route('admin.manageable-models.edit', ['table' => $this->getTable(), 'id' => $this->id]);
+
+        return "";
+    }
+
+    /**
+     * Returns the text for the submit button for the given page type
+     * @param ModelPageType $pageType
+     * @return string
+     */
+    public function getSubmitText(ModelPageType $pageType): string
+    {
+        if($pageType == ModelPageType::Create)
+            return 'Create';
+        else if($pageType == ModelPageType::Edit)
+            return 'Save';
+
+        return "";
+    }
+
+    /**
      * Builds an option set for a select field from a relationship
      * @param  string $relationshipModel Pass ModelName::class
      * @param  string $displayField Pass the field from the relationship model to display in the select options (e.g. 'name')

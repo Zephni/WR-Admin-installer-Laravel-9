@@ -47,7 +47,8 @@ class AdminController extends Controller
         return view('admin.manageable-models.browse', [
             'model' => $model,
             'columns' => $columns,
-            'rows' => $rows
+            'rows' => $rows,
+            'pageTitle' => $model->getPageTitle(ModelPageType::Browse),
         ]);
     }
 
@@ -130,6 +131,10 @@ class AdminController extends Controller
         return view('admin.manageable-models.create', [
             'model' => $model,
             'fields' => $fields,
+            'pageTitle' => $model->getPageTitle(ModelPageType::Create),
+            'submitRoute' => $model->getSubmitRoute(ModelPageType::Create),
+            'submitText' => $model->getSubmitText(ModelPageType::Create),
+            'onSuccessRedirect' => route('admin.manageable-models.edit', ['table' => $table, 'id' => $model->id]),
         ]);
     }
 
@@ -159,7 +164,11 @@ class AdminController extends Controller
         // Pass manageable fields to view
         return view('admin.manageable-models.edit', [
             'model' => $model,
-            'fields' => $fields
+            'fields' => $fields,
+            'pageTitle' => $model->getPageTitle(ModelPageType::Edit),
+            'submitRoute' => $model->getSubmitRoute(ModelPageType::Edit),
+            'submitText' => $model->getSubmitText(ModelPageType::Edit),
+            'onSuccessRedirect' => route('admin.manageable-models.edit', ['table' => $table, 'id' => $model->id]),
         ]);
     }
 
@@ -191,6 +200,10 @@ class AdminController extends Controller
         // We add __validated___ which is used to confirm validation has been run
         $request->merge(['__validated__' => true]);
 
+        // Get on_success_redirect and remove it from the request
+        $onSuccessRedirect = $request->on_success_redirect;
+        $request->request->remove('on_success_redirect');
+
         // Run onCreateHook
         $request = $model->onCreateHook($request);
 
@@ -203,8 +216,8 @@ class AdminController extends Controller
         // Save model
         $model->save();
 
-        // Redirect to edit
-        return redirect()->route('admin.manageable-models.edit', ['table' => $table, 'id' => $model->id])->with('success', $model->getHumanName(false).' created successfully');
+        // Redirect
+        return redirect($onSuccessRedirect)->with('success', $model->getHumanName(false).' created successfully');
     }
 
     /**
@@ -236,6 +249,10 @@ class AdminController extends Controller
         // We add __validated___ which is used to confirm validation has been run
         $request->merge(['__validated__' => true]);
 
+        // Get on_success_redirect and remove it from the request
+        $onSuccessRedirect = $request->on_success_redirect;
+        $request->request->remove('on_success_redirect');
+
         // Run onEditHook
         $request = $model->onEditHook($request);
 
@@ -248,8 +265,8 @@ class AdminController extends Controller
         // Save model
         $model->save();
 
-        // Redirect to browse
-        return redirect()->route('admin.manageable-models.edit', ['table' => $table, 'id' => $id])->with('success', $model->getHumanName(false).' updated successfully');
+        // Redirect
+        return redirect($onSuccessRedirect)->with('success', $model->getHumanName(false).' updated successfully');
     }
 
     /**
@@ -303,7 +320,11 @@ class AdminController extends Controller
         // Pass manageable fields to view
         return view('admin.manageable-models.edit', [
             'model' => $user,
-            'fields' => $fields
+            'fields' => $fields,
+            'pageTitle' => 'Manage account',
+            'submitRoute' => $user->getSubmitRoute(ModelPageType::Edit),
+            'submitText' => 'Update account',
+            'onSuccessRedirect' => route('admin.account.manage'),
         ]);
     }
 

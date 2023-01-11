@@ -1,10 +1,8 @@
 <x-admin-layout>
 
-    <x-slot name="title">{{ $model->getHumanName(true) }}</x-slot>
+    <x-slot name="title">{{ $pageTitle }}</x-slot>
 
-    <div class="relative text-3xl font-bold text-gray-300">
-        {{ $model->getHumanName(true) }}
-    </div>
+    <div class="relative text-3xl font-bold text-gray-300">{{ $pageTitle }}</div>
 
     <hr class="my-4 h-px bg-gray-500 border-0">
 
