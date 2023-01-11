@@ -59,6 +59,21 @@ class ManageableField
     }
 
     /**
+     * Merge the given data if the condition is true
+     * @param  bool $condition
+     * @param  mixed $data
+     * @return ManageableField
+     */
+    public function mergeDataIf(bool $condition, array $data): ManageableField
+    {
+        if ($condition) {
+            $this->data = array_merge($this->data, $data);
+        }
+
+        return $this;
+    }
+
+    /**
      * Ges data by key
      * @param  string $key
      * @return mixed if key exists

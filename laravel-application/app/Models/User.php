@@ -149,24 +149,26 @@ class User extends Authenticatable
 
     public function getManageableFields(ModelPageType $pageType): array
     {
-        $manageableFields = [];
-        $manageableFields[] = MField\Input::Create('email', $this->email, 'email')->mergeData(['readonly' => !Auth::user()->getPermission('zephni')]);
-        $manageableFields[] = MField\Input::Create('name', $this->name);
-        $manageableFields[] = MField\Input::Create('permissions', $this->permissions);
+        $isMaster = Auth::user()->getPermission('master');
 
-        if($pageType == ModelPageType::Create)
-        {
-            $manageableFields[] = MField\Input::Create('password', '', 'password');
-        }
-        else if($pageType == ModelPageType::Edit)
-        {
-            $manageableFields[] = MField\Input::Create('password', '', 'password')->mergeData(['placeholder' => 'Leave empty to keep current password']);
-            $manageableFields[] = '<p class="py-3">Hashed password: ' . $this->password . '</p>';
-            $manageableFields[] = '<p class="py-3">Created at: ' . $this->created_at . '</p>';
-            $manageableFields[] = '<p class="py-3">Last updated at: ' . $this->updated_at . '</p>';
-        }
+        return falseless([
+            // Email
+            MField\Input::Create('email', $this->email, 'email')->mergeDataIf(!$isMaster, ['readonly' => true]),
 
-        return $manageableFields;
+            // Name
+            MField\Input::Create('name', $this->name),
+
+            // Permissions
+            coalesce($isMaster) ?? MField\Input::Create('permissions', $this->permissions),
+
+            // Password
+            MField\Input::Create('password', '', 'password')->mergeDataIf($pageType == ModelPageType::Edit, ['placeholder' => 'Leave empty to keep current password']),
+
+            // Master only info
+            coalesce($isMaster) ?? '<p class="py-3">Hashed password: ' . $this->password . '</p>
+                                    <p class="py-3">Created at: ' . $this->created_at . '</p>
+                                    <p class="py-3">Last updated at: ' . $this->updated_at . '</p>'
+        ]);
     }
 
     /* Custom methods

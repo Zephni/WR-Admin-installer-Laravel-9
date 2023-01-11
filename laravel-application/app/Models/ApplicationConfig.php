@@ -78,11 +78,18 @@ class ApplicationConfig extends Model
 
     public function getManageableFields(ModelPageType $pageType): array
     {
-        return [
+        return falseless([
+            // Type
             MField\Select::Create('_type', $this->_type, $this->configTypes),
+
+            // Key
             MField\Input::Create('_key', $this->_key),
+
+            // Value
             MField\TextArea::Create('_value', $this->_value),
+
+            // Description
             MField\TextArea::Create('_description', $this->_description),
-        ];
+        ]);
     }
 }

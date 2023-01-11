@@ -89,7 +89,9 @@ class AdminController extends Controller
         // Loop through the paginated rows (just the ones for this page) and get the manageable field browse values
         for($i = 0; $i < count($paginatedRows); $i++) {
             // Get manageable fields from this row
-            $manageableFields = $paginatedRows[$i]->getManageableFields(ModelPageType::Browse);
+            $manageableFields = array_filter($paginatedRows[$i]->getManageableFields(ModelPageType::Browse), function ($field) {
+                return $field instanceof ManageableField;
+            });
 
             // Loop through the manageable fields
             foreach ($manageableFields as $manageableField) {
