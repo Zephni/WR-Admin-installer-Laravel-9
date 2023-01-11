@@ -29,7 +29,9 @@ class ManageableField
     }
 
     /**
-     * Create a new instance of the class and automatically use correct constructor parameters
+     * Create an instance using this constructor's parameters
+     * Can be used on any extending class
+     * @param  mixed ...$parameters
      */
     public static function Create(...$parameters): static
     {

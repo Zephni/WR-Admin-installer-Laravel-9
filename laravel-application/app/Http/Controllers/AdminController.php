@@ -281,6 +281,31 @@ class AdminController extends Controller
     }
 
     /**
+     * Manage users account
+     * @param  mixed $request
+     * @return View | RedirectResponse
+     */
+    public function manageAccount(Request $request): View | RedirectResponse
+    {
+        // Get user
+        $user = Auth::user();
+
+        // Check if user exists
+        if ($user == null) {
+            return redirect()->route('admin.dashboard')->with('error', 'User does not exist');
+        }
+
+        // Get manageable fields
+        $fields = $user->getManageableFields(ModelPageType::Edit);
+
+        // Pass manageable fields to view
+        return view('admin.manageable-models.edit', [
+            'model' => $user,
+            'fields' => $fields
+        ]);
+    }
+
+    /**
      * Logs in as the user with the given id
      * @param  mixed $request
      * @param  mixed $userid
@@ -361,15 +386,11 @@ class AdminController extends Controller
         $columns = \Schema::getColumnListing($model->getTable());
 
         foreach ($fields as $field) {
-            // Check if field is manageable field object
-            if (!($field instanceof \App\Classes\ManageableFields\ManageableField)) {
-                continue;
-            }
+            // Fail if field is not a manageable field
+            if (!($field instanceof \App\Classes\ManageableFields\ManageableField)) continue;
 
-            // Fail if trying to update a readonly field
-            if ($field->getData('readonly')) {
-                throw new \Exception('Field '.$field->name.' is readonly');
-            }
+            // Continue to next field if trying to update a readonly field
+            if ($field->getData('readonly')) continue;
 
             // Get field name
             $fieldName = $field->name;

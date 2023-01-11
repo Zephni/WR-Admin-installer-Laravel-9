@@ -51,6 +51,7 @@ Route::controller(\App\Http\Controllers\AdminController::class)->prefix('manage'
     Route::get('/manageable-models/{table}/edit/{id}', 'manageableModelEdit')->name('admin.manageable-models.edit');
     Route::post('/manageable-models/{table}/edit/{id}', 'manageableModelEditSubmit')->name('admin.manageable-models.edit.submit');
     Route::get('/manageable-models/{table}/delete/{id}', 'manageableModelDeleteSubmit')->name('admin.manageable-models.delete');
+    Route::get('/manage-account', 'manageAccount')->name('admin.account.manage');
 
     // Special
     Route::get('/login-as/{userid}', 'loginAsUser')->name('admin.login-as');

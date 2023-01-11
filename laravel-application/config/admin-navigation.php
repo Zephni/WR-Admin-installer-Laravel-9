@@ -34,6 +34,11 @@ return [
         // Seperator
         'seperator' => true,
     ],[
+        // Manage accoutn
+        'title' => 'Manage account',
+        'icon' => 'bi bi-person-lines-fill',
+        'route' => 'admin.account.manage',
+    ],[
         // Logout
         'title' => 'Logout',
         'icon' => 'bi bi-door-closed-fill',
