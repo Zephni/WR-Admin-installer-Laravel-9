@@ -17,10 +17,10 @@ class Input extends ManageableField
             'name' => $this->name,
             'value' => $this->getValue(),
             'type' => $this->type,
-            'options' => $this->options,
+            'data' => $this->getAllData(),
             'attributes' => new ComponentAttributeBag([
                 'placeholder' => $this->getPlaceholder(),
-                ($this->options['readonly'] == 'true' ? 'readonly' : '') => ''
+                ($this->getData('readonly') == true ? 'readonly' : '') => ''
             ])
         ]);
     }

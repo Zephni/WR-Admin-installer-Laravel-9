@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Enums\ModelPageType;
 use App\Traits\ManageableModel;
 use Illuminate\Database\Eloquent\Model;
-use App\Classes\ManageableFields as ManageableFields;
+use App\Classes\ManageableFields as MField;
 use Symfony\Component\HttpFoundation\Request;
 
 class ApplicationConfig extends Model
@@ -79,10 +79,10 @@ class ApplicationConfig extends Model
     public function getManageableFields(ModelPageType $pageType): array
     {
         return [
-            new ManageableFields\Select('_type', $this->_type, $this->configTypes),
-            new ManageableFields\Input('_key', $this->_key),
-            new ManageableFields\TextArea('_value', $this->_value),
-            new ManageableFields\TextArea('_description', $this->_description),
+            MField\Select::Create('_type', $this->_type, $this->configTypes),
+            MField\Input::Create('_key', $this->_key),
+            MField\TextArea::Create('_value', $this->_value),
+            MField\TextArea::Create('_description', $this->_description),
         ];
     }
 }

@@ -2,7 +2,7 @@
     'label'     => null,
     'name'      => $name ?? 'unset',
     'value'     => $value ?? '',
-    'options'   => $options ?? [],
+    'data'      => $data ?? [],
 ])
 
 <div class="block w-full py-3">
@@ -13,13 +13,14 @@
     <select
         id="mf_{{ $name }}"
         name="{{ $name }}"
+        @if($data['readonly'] ?? false) readonly @endif
         {{ $attributes->merge(['class' => 'w-full border border-gray-500 bg-gray-900 text-gray-300 rounded-md px-2 py-2']) }}>
-        @foreach($options['options'] as $optionKey => $optionValue)
+        @foreach($data['options'] as $optionKey => $optionValue)
             <option value="{{ $optionKey }}" {{ $optionKey == $value ? 'selected' : '' }}>{{ $optionValue }}</option>
         @endforeach
     </select>
 
-    @if($options['info'] ?? false)
-        <x-admin.alert type="info" :message="$options['info']" />
+    @if($data['info'] ?? false)
+        <x-admin.alert type="info" :message="$data['info']" />
     @endif
 </div>

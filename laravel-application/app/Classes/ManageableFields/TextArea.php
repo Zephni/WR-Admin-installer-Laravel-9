@@ -8,7 +8,7 @@ class TextArea extends ManageableField
     public function __construct(string $name, string $defaultValue = null, int $rows = 5)
     {
         parent::__construct($name, $defaultValue, 'textarea');
-        $this->options([
+        $this->mergeData([
             'rows' => $rows
         ]);
     }
@@ -19,11 +19,11 @@ class TextArea extends ManageableField
             'label' => $this->getLabel(),
             'name' => $this->name,
             'value' => $this->getValue(),
-            'options' => $this->options,
+            'options' => $this->getAllData(),
             'attributes' => new ComponentAttributeBag([
                 'placeholder' => $this->getPlaceholder(),
-                'rows' => $this->options['rows'],
-                ($this->options['readonly'] == 'true' ? 'readonly' : '') => ''
+                'rows' => $this->getData('rows'),
+                ($this->getData('readonly') == true ? 'readonly' : '') => ''
             ])
         ]);
     }

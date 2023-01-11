@@ -7,7 +7,7 @@ class ManageableField
     public string $name;
     public string $type;
     public string $value;
-    public array $options = [
+    private array $data = [
         'readonly' => false,
         'placeholder' => '',
         'info' => false,
@@ -29,6 +29,14 @@ class ManageableField
     }
 
     /**
+     * Create a new instance of the class and automatically use correct constructor parameters
+     */
+    public static function Create(...$parameters): static
+    {
+        return new static(...$parameters);
+    }
+
+    /**
      * Override this method to render the field
      * @return mixed
      */
@@ -38,14 +46,38 @@ class ManageableField
     }
 
     /**
-     * Appends the given options to the options array
-     * @param  mixed $options
+     * Merges the given data to the data array
+     * @param  mixed $data
      * @return ManageableField
      */
-    public function options(array $options): ManageableField
+    public function mergeData(array $data): ManageableField
     {
-        $this->options = array_merge($this->options, $options);
+        $this->data = array_merge($this->data, $data);
         return $this;
+    }
+
+    /**
+     * Ges data by key
+     * @param  string $key
+     * @return mixed if key exists
+     * @return null if key does not exist
+     */
+    public function getData(string $key): mixed
+    {
+        if (!array_key_exists($key, $this->data)) {
+            return null;
+        }
+
+        return $this->data[$key];
+    }
+
+    /**
+     * Gets all data
+     * @return array
+     */
+    public function getAllData(): array
+    {
+        return $this->data;
     }
 
     /**
@@ -84,8 +116,8 @@ class ManageableField
      */
     public function getPlaceholder(): string
     {
-        return !empty($this->options['placeholder'])
-            ? $this->options['placeholder']
+        return !empty($this->data['placeholder'])
+            ? $this->data['placeholder']
             : 'Enter ' . \Str::of($this->name)->replace('_', ' ')->lower()->trim();
     }
 }

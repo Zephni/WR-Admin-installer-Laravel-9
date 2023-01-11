@@ -366,6 +366,11 @@ class AdminController extends Controller
                 continue;
             }
 
+            // Fail if trying to update a readonly field
+            if ($field->getData('readonly')) {
+                throw new \Exception('Field '.$field->name.' is readonly');
+            }
+
             // Get field name
             $fieldName = $field->name;
 

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 use App\Classes\Permissions;
-use \App\Classes\ManageableFields as ManageableFields;
+use \App\Classes\ManageableFields as MField;
 use Symfony\Component\HttpFoundation\Request;
 use \App\Enums\ModelPageType;
 
@@ -149,17 +149,17 @@ class User extends Authenticatable
     public function getManageableFields(ModelPageType $pageType): array
     {
         $manageableFields = [];
-        $manageableFields[] = (new ManageableFields\Input('email', $this->email, 'email'))->options(['readonly' => !Auth::user()->getPermission('zephni')]);
-        $manageableFields[] = new ManageableFields\Input('name', $this->name);
-        $manageableFields[] = new ManageableFields\Input('permissions', $this->permissions);
+        $manageableFields[] = MField\Input::Create('email', $this->email, 'email')->mergeData(['readonly' => !Auth::user()->getPermission('zephni')]);
+        $manageableFields[] = MField\Input::Create('name', $this->name);
+        $manageableFields[] = MField\Input::Create('permissions', $this->permissions);
 
         if($pageType == ModelPageType::Create)
         {
-            $manageableFields[] = new ManageableFields\Input('password', '', 'password');
+            $manageableFields[] = MField\Input::Create('password', '', 'password');
         }
         else if($pageType == ModelPageType::Edit)
         {
-            $manageableFields[] = (new ManageableFields\Input('password', '', 'password'))->options(['placeholder' => 'Leave empty to keep current password']);
+            $manageableFields[] = MField\Input::Create('password', '', 'password')->mergeData(['placeholder' => 'Leave empty to keep current password']);
             $manageableFields[] = '<p class="py-3">Hashed password: ' . $this->password . '</p>';
             $manageableFields[] = '<p class="py-3">Created at: ' . $this->created_at . '</p>';
             $manageableFields[] = '<p class="py-3">Last updated at: ' . $this->updated_at . '</p>';

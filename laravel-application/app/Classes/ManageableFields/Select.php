@@ -8,7 +8,7 @@ class Select extends ManageableField
     public function __construct(string $name, string $defaultValue = null, array $options)
     {
         parent::__construct($name, $defaultValue, 'select');
-        $this->options([
+        $this->mergeData([
             'options' => $options, // key => value
         ]);
     }
@@ -19,23 +19,30 @@ class Select extends ManageableField
             'label' => $this->getLabel(),
             'name' => $this->name,
             'value' => $this->getValue(),
-            'options' => $this->options,
+            'data' => $this->getAllData(),
             'attributes' => new ComponentAttributeBag([
-                ($this->options['readonly'] == 'true' ? 'readonly' : '') => ''
+                ($this->getData('readonly') == true ? 'readonly' : '') => ''
             ])
         ]);
     }
 
     public function getBrowseValue(): string
     {
+        // If options is not an array, return the value
+        if (!is_array($this->getData('options'))) {
+            return $this->getValue();
+        }
+
+        $fieldOptions = (array)$this->getData('options');
+
         // If the value is not in the options array, return the value
-        if (!array_key_exists($this->getValue(), $this->options['options'])) {
+        if (!array_key_exists($this->getValue(), $fieldOptions)) {
             return $this->getValue();
         }
         // Otherwise, return the human readable value
         else
         {
-            return $this->options['options'][$this->getValue()];
+            return $fieldOptions[$this->getValue()];
         }
     }
 }
