@@ -19,14 +19,16 @@
 @endphp
 
 @if($link)
-<a
-    href="{{ $href }}"
-    title="{{ $text }}"
-    @if($confirm != '0')
-        onclick="return confirm('{{ $confirm }}')"
-    @endif
-    {{ $attributes->merge(['class' => $typeStyle.' text-white font-bold uppercase text-xs px-4 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150']) }}
-    ><span class="relative" style="top: -1px;">{{ $text }}</span></a>
+    <a
+        href="{{ $href }}"
+        title="{{ strip_tags($text) }}"
+        @if($confirm != '0')
+            onclick="return confirm('{{ $confirm }}')"
+        @endif
+        {{ $attributes->merge(['class' => $typeStyle.' text-white font-bold uppercase text-xs px-4 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150']) }}
+    >
+        <span class="font-light relative" style="top: -1px;">{!! $text !!}</span>
+    </a>
 @else
     {{-- TODO: Make button version --}}
 @endif

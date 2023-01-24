@@ -24,7 +24,7 @@
                 @endif
             @endforeach
 
-            <x-admin.manageable-fields.submit value="{{ $submitText }}" />
+            <x-admin.manageable-fields.submit value="{{ $submitText }}" icon="bi bi-pencil-square" />
         </form>
     </div>
 
