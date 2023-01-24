@@ -30,7 +30,7 @@
     />
 
     @if($data['info'] ?? false)
-        <x-admin.alert type="info" :message="$data['info']" />
+        <x-admin.alert type="info-basic" :message="$data['info']" />
     @endif
 @if($type != 'hidden'&& $label != null)
 </div>
