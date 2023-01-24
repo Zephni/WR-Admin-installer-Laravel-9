@@ -134,7 +134,9 @@ class AdminController extends Controller
             'pageTitle' => $model->getPageTitle(ModelPageType::Create),
             'submitRoute' => $model->getSubmitRoute(ModelPageType::Create),
             'submitText' => $model->getSubmitText(ModelPageType::Create),
-            'onSuccessRedirect' => route('admin.manageable-models.edit', ['table' => $table, 'id' => $model->id]),
+            // Need to get the id of the new model post creation below
+            // 'onSuccessRedirect' => route('admin.manageable-models.edit', ['table' => $table, 'id' => $model->id]),
+            'onSuccessRedirect' => route('admin.manageable-models.browse', ['table' => $table]),
         ]);
     }
 

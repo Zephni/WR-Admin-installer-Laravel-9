@@ -159,15 +159,16 @@ class User extends Authenticatable
             MField\Input::Create('name', $this->name),
 
             // Permissions
-            coalesce($isMaster) ?? MField\Input::Create('permissions', $this->permissions),
+            coalesce($isMaster) ?? MField\Input::Create('permissions', $this->permissions, 'textarea')->mergeData(['info' => 'JSON formatted permissions']),
 
             // Password
             MField\Input::Create('password', '', 'password')->mergeDataIf($pageType == ModelPageType::Edit, ['placeholder' => 'Leave empty to keep current password']),
 
             // Master only info
-            coalesce($isMaster) ?? '<p class="py-3">Hashed password: ' . $this->password . '</p>
-                                    <p class="py-3">Created at: ' . $this->created_at . '</p>
-                                    <p class="py-3">Last updated at: ' . $this->updated_at . '</p>'
+            coalesce($pageType == ModelPageType::Edit && $isMaster) ??
+                '<p class="py-3">Hashed password: ' . $this->password . '</p>
+                <p class="py-3">Created at: ' . $this->created_at . '</p>
+                <p class="py-3">Last updated at: ' . $this->updated_at . '</p>'
         ]);
     }
 
