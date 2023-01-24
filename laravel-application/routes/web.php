@@ -61,6 +61,28 @@ Route::controller(\App\Http\Controllers\AdminController::class)->prefix('manage'
 ----------------------------------------------------------------*/
 if (env('APP_ENV') === 'local') {
     Route::group(['prefix' => 'temp'], function(){
+        Route::get('/create-primary-user', function () {
+            // If there are no users, create a primary user
+            if(App\Models\User::count() == 0)
+            {
+                $user = new App\Models\User();
+                $user->name = 'Zephni';
+                $user->email = 'zephni@hotmail.co.uk';
+                $user->password = bcrypt('temp');
+                $permissions = new App\Classes\Permissions();
+                $permissions->zephni = true;
+                $permissions->master = true;
+                $permissions->admin = true;
+                $user->permissions = $permissions->asString();
+                $user->save();
+                dd($user);
+            }
+            else
+            {
+                dd('Invalid request, there are already users in the database');
+            }
+        });
+
         Route::get('/set-permissions', function () {
             $user = App\Models\User::where('email', 'zephni@hotmail.co.uk')->first();
             $permissions = new App\Classes\Permissions();

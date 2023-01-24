@@ -4,6 +4,7 @@ namespace App\Classes;
 
 class Permissions
 {
+    public bool $zephni = false;
     public bool $master = false;
     public bool $admin = false;
 
