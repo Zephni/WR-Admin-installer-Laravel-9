@@ -1,9 +1,9 @@
 /.fleet
 /.idea
 /.vscode
-/laravel-application/storage/*.key
-/laravel-application/vendor
-/laravel-application/node_modules
+/laravel_application/storage/*.key
+/laravel_application/vendor
+/laravel_application/node_modules
 *.env
 *.env.backup
 *.env.production
