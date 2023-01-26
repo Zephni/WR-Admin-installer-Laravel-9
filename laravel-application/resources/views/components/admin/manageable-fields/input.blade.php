@@ -25,7 +25,8 @@
         name="{{ $name }}"
         type="{{ $type }}"
         value="{{ $value }}"
-        @if($data['readonly'] ?? false) readonly @endif
+        @if(isset($data['spellcheck'])) spellcheck="{{ ($data['spellcheck'] == true) ? 'true' : 'false' }}" @endif
+        @if(($data['readonly'] ?? false) == true) readonly @endif
         {{ $attributes->merge(['class' => 'w-full border border-gray-500 bg-gray-900 text-gray-300 rounded-md px-2 py-2'.$appendedClasses]) }}
     />
 

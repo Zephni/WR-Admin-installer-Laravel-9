@@ -281,7 +281,7 @@ class AdminController extends Controller
     public function manageableModelDeleteSubmit(Request $request, string $table, int $id): View | RedirectResponse
     {
         // Get this model's class
-        $modelClass = $this->getModelFromTable($table);
+        $modelClass = $this->getManageableModelFromTable($table);
 
         // Get instance of this model by id
         $model = $modelClass::find($id);

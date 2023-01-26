@@ -13,7 +13,8 @@
     <textarea
         id="mf_{{ $name }}"
         name="{{ $name }}"
-        @if($data['readonly'] ?? false) readonly @endif
+        @if(($data['spellcheck'] ?? false) == true) spellcheck="true" @endif
+        @if(($data['readonly'] ?? false) == true) readonly @endif
         {{ $attributes->merge(['class' => 'w-full border border-gray-500 bg-gray-900 text-gray-300 rounded-md px-2 py-2']) }}
     >{{ $value }}</textarea>
 

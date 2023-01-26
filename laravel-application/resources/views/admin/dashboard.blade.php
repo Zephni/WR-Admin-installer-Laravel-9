@@ -3,7 +3,7 @@
     <x-slot name="title">Dashboard</x-slot>
 
     <div class="px-16">
-        <h1 class="mt-8 text-4xl text-center font-light">TODO: BUILD DEFAULT ADMINISTRATION</h1>
+        <h1 class="mt-8 text-4xl text-center font-light">DEFAULT ADMINISTRATION</h1>
         <hr class="my-6 border-slate-500">
         <p class="text-center font-light">
             Here a user will be able to manage all of the backend aspects of the website.<br />

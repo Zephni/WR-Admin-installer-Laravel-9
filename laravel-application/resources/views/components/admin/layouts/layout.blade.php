@@ -22,10 +22,10 @@
     </head>
     <body class="relative bg-gray-900 flex h-full" x-data="{ navigationOpen: $persist(true) }">
         {{-- NAVIGATION --}}
-        <button title="Expand sidebar" x-show="!navigationOpen" @click="navigationOpen = !navigationOpen" class="absolute top-3 -left-1 bg-gray-800 rounded py-0 pl-2 border border-gray-700">
+        <button title="Expand sidebar" x-show="!navigationOpen" @click="navigationOpen = !navigationOpen" class="fixed top-3 -left-1 bg-gray-800 rounded py-0 pl-2 border border-gray-700">
             <i class="bi bi-arrow-bar-right text-gray-300"></i>
         </button>
-        <aside x-show="navigationOpen" x-transition.duration.400ms class="fixed z-10 w-96 min-h-screen px-3 bg-gray-800 border-r border-slate-700" aria-label="Sidebar">
+        <aside x-show="navigationOpen" x-transition.duration.400ms class="fixed z-10 w-96 min-h-screen px-3 bg-gray-800 border-r border-slate-700 shadow-2xl shadow-slate-900" aria-label="Sidebar">
             <button title="Collapse sidebar" @click="navigationOpen = !navigationOpen" class="absolute top-3 -right-3 bg-gray-800 rounded pr-2 py-1">
                 <i class="bi bi-arrow-bar-left text-gray-300"></i>
             </button>

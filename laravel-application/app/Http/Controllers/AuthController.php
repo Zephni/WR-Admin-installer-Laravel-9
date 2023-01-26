@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\CustomData;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
@@ -28,21 +29,16 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        // Create a new user
+        // Create a new user and save it to the database
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-
-        $permissions = new Permissions([
-            'master' => false,
-            'admin' => true
-        ]);
-        $user->permissions = $permissions->asString();
-
+        $user->permissions = (new Permissions)->asString();
+        $user->custom_data = (new CustomData)->asString();
         $user->save();
 
-        // Login the user and redirect to admin dashboard page (This should change if we are regestering standard users)
+        // Login the user and redirect to admin dashboard
         Auth::login($user);
         return redirect()->route('admin.dashboard');
     }
